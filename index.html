@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meu App Cristão</title>
+
+<meta name="theme-color" content="#121214">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="App Cristão">
+
+<style>
+body{font-family:-apple-system; margin:0; background:#0b0b0c; color:#fff}
+header{padding:16px; background:#121214; text-align:center}
+button{background:#1c1c1f; color:#fff; border:1px solid #2a2a2e; padding:10px; border-radius:10px; margin:5px}
+.card{background:#121214; padding:15px; border-radius:15px; margin:15px}
+input, textarea{width:100%; padding:10px; margin-top:10px; border-radius:10px; border:none}
+</style>
+</head>
+
+<body>
+
+<header>
+<h2>📖 Meu App Cristão</h2>
+</header>
+
+<div class="card">
+<h3>Versículo do Dia</h3>
+<p id="verso"></p>
+<button onclick="trocar()">Trocar Versículo</button>
+</div>
+
+<div class="card">
+<h3>Anotações</h3>
+<textarea id="nota" placeholder="Escreva aqui..."></textarea>
+<button onclick="salvarNota()">Salvar</button>
+<p id="notaSalva"></p>
+</div>
+
+<div class="card">
+<h3>Timer de Oração</h3>
+<p id="tempo">00:00</p>
+<button onclick="iniciar(5)">5 min</button>
+<button onclick="iniciar(10)">10 min</button>
+<button onclick="parar()">Parar</button>
+</div>
+
+<script>
+const versos=[
+"O Senhor é o meu pastor; nada me faltará. - Salmo 23:1",
+"Buscai primeiro o Reino de Deus. - Mateus 6:33",
+"Não temas, porque eu sou contigo. - Isaías 41:10",
+"Não andeis ansiosos por coisa alguma. - Filipenses 4:6"
+];
+
+let indice=0;
+document.getElementById("verso").innerText=versos[0];
+
+function trocar(){
+indice=(indice+1)%versos.length;
+document.getElementById("verso").innerText=versos[indice];
+}
+
+function salvarNota(){
+localStorage.setItem("nota",document.getElementById("nota").value);
+document.getElementById("notaSalva").innerText="Salvo!";
+}
+
+document.getElementById("nota").value=localStorage.getItem("nota")||"";
+
+let timer;
+let restante=0;
+
+function iniciar(min){
+parar();
+restante=min*60;
+timer=setInterval(()=>{
+let m=Math.floor(restante/60);
+let s=restante%60;
+document.getElementById("tempo").innerText=
+String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+if(restante<=0){
+alert("Tempo concluído 🙏");
+parar();
+}
+restante--;
+},1000);
+}
+
+function parar(){
+clearInterval(timer);
+}
+</script>
+
+</body>
+</html>
