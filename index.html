@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
   <title>App Cristão</title>
 
-  <!-- PWA -->
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#0B1220">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -16,17 +15,15 @@
     :root{
       --bg:#070B14;
       --card:#0B1220;
-      --card2:#0F1A2E;
+      --line:rgba(255,255,255,.10);
       --text:#EAF0FF;
       --muted:#A7B4D6;
-      --line:rgba(255,255,255,.10);
       --btn:#111C33;
-      --btn2:#16274A;
+      --shadow: 0 14px 35px rgba(0,0,0,.35);
+      --radius:18px;
       --good:#45E2A8;
       --warn:#FFD36E;
       --bad:#FF6B6B;
-      --shadow: 0 14px 35px rgba(0,0,0,.35);
-      --radius:18px;
     }
     *{box-sizing:border-box}
     body{
@@ -44,13 +41,8 @@
       background: linear-gradient(to bottom, rgba(7,11,20,.92), rgba(7,11,20,.65));
       border-bottom:1px solid var(--line);
     }
-    .top{
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
-      max-width:980px; margin:0 auto;
-    }
-    .brand{
-      display:flex; gap:10px; align-items:center;
-    }
+    .top{display:flex; align-items:center; justify-content:space-between; gap:12px; max-width:980px; margin:0 auto;}
+    .brand{display:flex; gap:10px; align-items:center}
     .logo{
       width:40px; height:40px; border-radius:14px;
       background: linear-gradient(135deg, rgba(90,140,255,.9), rgba(69,226,168,.8));
@@ -68,13 +60,13 @@
       color:var(--muted);
       font-size:12px;
       display:flex; gap:8px; align-items:center;
+      max-width:55%;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
     .wrap{max-width:980px; margin:0 auto; padding:14px 16px 96px}
-    .grid{
-      display:grid;
-      grid-template-columns: 1.25fr .75fr;
-      gap:12px;
-    }
+    .grid{display:grid; grid-template-columns:1.25fr .75fr; gap:12px}
     @media (max-width: 860px){ .grid{grid-template-columns:1fr} }
     .card{
       background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
@@ -83,7 +75,6 @@
       box-shadow: var(--shadow);
       padding:14px;
     }
-    .card h2{margin:0 0 10px; font-size:14px; letter-spacing:.2px; color:var(--muted); font-weight:700}
     .hero{
       background: radial-gradient(700px 350px at 15% 0%, rgba(90,140,255,.22), transparent 60%),
                   radial-gradient(600px 300px at 95% 10%, rgba(69,226,168,.18), transparent 60%),
@@ -92,9 +83,8 @@
       border-radius: var(--radius);
       padding:16px;
     }
-    .verse{
-      font-size:20px; line-height:1.35; margin:0 0 10px;
-    }
+    .card h2{margin:0 0 10px; font-size:14px; letter-spacing:.2px; color:var(--muted); font-weight:700}
+    .verse{font-size:20px; line-height:1.35; margin:0 0 10px}
     .ref{color:var(--muted); font-size:13px}
     .actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
     button{
@@ -108,20 +98,8 @@
     }
     button.primary{background: linear-gradient(135deg, rgba(90,140,255,.35), rgba(69,226,168,.26));}
     button.ghost{background: rgba(255,255,255,.05);}
+    button.danger{background: rgba(255,107,107,.12);}
     button:active{transform:scale(.99)}
-    .mini{
-      display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;
-      color:var(--muted); font-size:12px;
-    }
-    .dev{
-      margin-top:12px;
-      padding:12px;
-      border-radius:16px;
-      background: rgba(255,255,255,.04);
-      border:1px solid var(--line);
-    }
-    .dev b{display:block; margin-bottom:6px}
-    .list{display:flex; flex-direction:column; gap:10px}
     .item{
       padding:12px;
       border-radius:16px;
@@ -132,9 +110,8 @@
     .row .left{min-width:0}
     .row .left b{display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
     .row .left span{color:var(--muted); font-size:12px}
-    .tag{font-size:12px; color:var(--muted)}
+    .tiny{font-size:12px; color:var(--muted)}
     .ok{color:var(--good); font-weight:800}
-    .warn{color:var(--warn); font-weight:800}
     input, textarea{
       width:100%;
       background: rgba(255,255,255,.04);
@@ -146,6 +123,9 @@
       font-size:14px;
     }
     textarea{min-height:110px; resize:vertical}
+    .list{display:flex; flex-direction:column; gap:10px}
+    .split{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+    @media (max-width:520px){ .split{grid-template-columns:1fr} }
     .tabs{
       position:fixed; left:0; right:0; bottom:0;
       background: rgba(7,11,20,.85);
@@ -162,6 +142,7 @@
       border:1px solid transparent;
       color:var(--muted);
       font-size:11px;
+      user-select:none;
     }
     .tab.active{
       color:var(--text);
@@ -169,10 +150,20 @@
       border-color: var(--line);
     }
     .tab i{font-style:normal; font-size:18px}
-    .split{display:grid; grid-template-columns:1fr 1fr; gap:10px}
-    @media (max-width:520px){ .split{grid-template-columns:1fr} }
-    .tiny{font-size:12px; color:var(--muted)}
-    .danger{background: rgba(255,107,107,.12)}
+    .gallery{
+      display:grid;
+      grid-template-columns:repeat(2, 1fr);
+      gap:10px;
+      margin-top:12px;
+    }
+    .gallery img{
+      width:100%;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      object-fit:cover;
+      aspect-ratio: 1 / 1;
+    }
   </style>
 </head>
 
@@ -183,7 +174,7 @@
       <div class="logo">✝️</div>
       <div class="titles">
         <b>App Cristão</b>
-        <span>Seu devocional pessoal • offline</span>
+        <span>Versículo • Música • Oração • Imagens</span>
       </div>
     </div>
     <div class="pill" id="statusPill">⏳ Preparando…</div>
@@ -191,7 +182,6 @@
 </header>
 
 <div class="wrap">
-  <!-- HOJE -->
   <section id="view-hoje">
     <div class="grid">
       <div class="card hero">
@@ -201,415 +191,265 @@
 
         <div class="actions">
           <button class="primary" onclick="nextVerse()">Trocar</button>
-          <button class="ghost" onclick="shareVerse()">Compartilhar</button>
           <button class="ghost" onclick="copyVerse()">Copiar</button>
         </div>
 
-        <div class="dev">
-          <b id="devTitle">Devocional (1 minuto)</b>
-          <div class="tiny" id="devText">…</div>
-        </div>
-
-        <div class="mini">
-          <span>💾 Salva no seu iPhone</span>
-          <span>📴 Funciona offline</span>
-          <span>🕖 Lembrete: Atalhos</span>
+        <div class="item" style="margin-top:12px">
+          <b class="tiny">Devocional</b>
+          <div class="tiny" id="devText" style="margin-top:8px">…</div>
         </div>
       </div>
 
       <div class="card">
-        <h2>PLANO DE LEITURA</h2>
+        <h2>TIMER DE ORAÇÃO</h2>
         <div class="item">
           <div class="row">
-            <div class="left">
-              <b id="planTitle">Plano “30 dias”</b>
-              <span id="planSubtitle">Dia …</span>
-            </div>
-            <div class="tag" id="planPct">0%</div>
+            <b id="timerShow">00:00</b>
+            <span class="tiny" id="timerMsg"></span>
           </div>
           <div class="actions" style="margin-top:10px">
-            <button class="primary" onclick="markTodayDone()">Marcar “feito”</button>
-            <button class="ghost" onclick="resetPlan()">Reiniciar</button>
-          </div>
-          <div class="tiny" style="margin-top:10px" id="planTodayText"></div>
-        </div>
-
-        <div class="item" style="margin-top:10px">
-          <div class="row">
-            <div class="left">
-              <b>Checklist da semana</b>
-              <span>Vitórias pequenas, constância grande</span>
-            </div>
-            <span class="ok" id="weekDone">0/7</span>
+            <button onclick="startTimer(5)">5 min</button>
+            <button onclick="startTimer(10)">10 min</button>
+            <button onclick="startTimer(15)">15 min</button>
+            <button class="ghost" onclick="stopTimer()">Parar</button>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ORAÇÃO -->
+  <section id="view-musica" style="display:none">
+    <div class="card">
+      <h2>MÚSICA</h2>
+      <div class="item">
+        <div class="split">
+          <input id="musicUrl" placeholder="Cole um link MP3 (opcional)"/>
+          <button class="primary" onclick="playUrl()">Tocar</button>
+        </div>
+        <div class="tiny" style="margin-top:8px">Ou escolha um áudio do iPhone:</div>
+        <input type="file" accept="audio/*" onchange="playFile(this.files[0])" style="margin-top:10px"/>
+        <audio id="player" controls style="width:100%; margin-top:12px;"></audio>
+      </div>
+    </div>
+  </section>
+
   <section id="view-oracao" style="display:none">
     <div class="card">
-      <h2>ORAÇÃO</h2>
-
-      <div class="split">
-        <input id="prTitle" placeholder="Título (ex: Família)"/>
-        <button class="primary" onclick="addPrayer()">Adicionar</button>
+      <h2>PEDIDOS DE ORAÇÃO</h2>
+      <div class="item">
+        <div class="split">
+          <input id="prTitle" placeholder="Título (ex: Família)"/>
+          <button class="primary" onclick="addPrayer()">Adicionar</button>
+        </div>
+        <textarea id="prText" placeholder="Escreva o pedido…"></textarea>
       </div>
-      <textarea id="prText" placeholder="Detalhes do pedido…"></textarea>
-
       <div class="list" id="prList" style="margin-top:12px"></div>
     </div>
   </section>
 
-  <!-- NOTAS -->
-  <section id="view-notas" style="display:none">
+  <section id="view-imagens" style="display:none">
     <div class="card">
-      <h2>ANOTAÇÕES</h2>
-      <div class="split">
-        <input id="noteTitle" placeholder="Título (ex: Sermão)"/>
-        <button class="primary" onclick="addNote()">Salvar</button>
-      </div>
-      <textarea id="noteText" placeholder="Escreva aqui…"></textarea>
-      <div class="list" id="noteList" style="margin-top:12px"></div>
-    </div>
-  </section>
-
-  <!-- CONFIG -->
-  <section id="view-config" style="display:none">
-    <div class="card">
-      <h2>CONFIG / BACKUP</h2>
-
+      <h2>IMAGENS</h2>
       <div class="item">
-        <div class="row">
-          <div class="left">
-            <b>Backup (exportar)</b>
-            <span>Gera um arquivo com suas notas e orações</span>
-          </div>
-          <button class="ghost" onclick="exportData()">Exportar</button>
+        <input type="file" accept="image/*" multiple onchange="saveImages(this.files)" />
+        <div class="actions" style="margin-top:10px">
+          <button class="ghost" onclick="clearImages()">Apagar todas</button>
         </div>
       </div>
-
-      <div class="item" style="margin-top:10px">
-        <div class="row">
-          <div class="left">
-            <b>Importar backup</b>
-            <span>Restaura seus dados</span>
-          </div>
-          <input type="file" id="importFile" accept="application/json" onchange="importData(this.files[0])">
-        </div>
-      </div>
-
-      <div class="item danger" style="margin-top:10px">
-        <div class="row">
-          <div class="left">
-            <b>Apagar tudo</b>
-            <span>Remove notas, orações e progresso</span>
-          </div>
-          <button onclick="wipeAll()">Apagar</button>
-        </div>
-      </div>
-
-      <div class="tiny" style="margin-top:12px">
-        ℹ️ Dica: para lembrete 07:00, crie uma Automação no app <b>Atalhos</b> (eu te explico abaixo).
-      </div>
+      <div class="gallery" id="gallery"></div>
     </div>
   </section>
 </div>
 
-<!-- Bottom tabs -->
 <nav class="tabs">
   <div class="tab active" id="tab-hoje" onclick="show('hoje')"><i>🏠</i>Hoje</div>
-  <div class="tab" id="tab-oracao" onclick="show('oracao')"><i>🙏</i>Oração</div>
-  <div class="tab" id="tab-notas" onclick="show('notas')"><i>📝</i>Notas</div>
-  <div class="tab" id="tab-config" onclick="show('config')"><i>⚙️</i>Config</div>
+  <div class="tab" id="tab-musica" onclick="show('musica')"><i>🎵</i>Música</div>
+  <div class="tab" id="tab-oracao" onclick="show('oracao')"><i>🙏</i>Pedidos</div>
+  <div class="tab" id="tab-imagens" onclick="show('imagens')"><i>🖼️</i>Imagens</div>
 </nav>
 
 <script>
-  // ---------- Service worker (offline) ----------
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(()=>{}));
   }
 
-  // ---------- Data store ----------
   const store = {
     get(k, fallback){ try { return JSON.parse(localStorage.getItem(k)) ?? fallback; } catch { return fallback; } },
     set(k, v){ localStorage.setItem(k, JSON.stringify(v)); },
   };
 
-  // ---------- Content ----------
-  const verses = [
-    {ref:"Salmo 23:1", text:"O Senhor é o meu pastor; nada me faltará."},
-    {ref:"Mateus 6:33", text:"Buscai primeiro o Reino de Deus e a sua justiça, e todas essas coisas vos serão acrescentadas."},
-    {ref:"Filipenses 4:6", text:"Não andeis ansiosos por coisa alguma; em tudo, porém, sejam conhecidas diante de Deus as vossas petições."},
-    {ref:"Isaías 41:10", text:"Não temas, porque eu sou contigo; não te assombres, porque eu sou o teu Deus."},
-    {ref:"Romanos 8:28", text:"Todas as coisas cooperam para o bem daqueles que amam a Deus."},
-    {ref:"João 14:27", text:"Deixo-vos a paz, a minha paz vos dou; não vo-la dou como o mundo a dá."},
-    {ref:"Provérbios 3:5", text:"Confia no Senhor de todo o teu coração e não te estribes no teu próprio entendimento."},
-  ];
-
-  const devotionals = [
-    {title:"Confiança", text:"Hoje, escolha confiar antes de entender. Deus guia um passo por vez. Faça o que você pode, entregue o que você não controla e permaneça firme."},
-    {title:"Paz", text:"A paz de Cristo não depende das circunstâncias. Respire, ore simples, e siga. A paz é um presente — receba e caminhe."},
-    {title:"Constância", text:"Deus trabalha na repetição: um dia, uma decisão, um hábito. Pequenas obediencias constroem grandes vitórias."},
-    {title:"Coragem", text:"Coragem não é ausência de medo; é fidelidade apesar do medo. Dê o próximo passo com Deus."},
-  ];
-
-  // Plano simples de 30 dias (sem texto bíblico completo, apenas referências)
-  const plan30 = [
-    "Dia 1: Salmo 1", "Dia 2: Salmo 23", "Dia 3: Salmo 91", "Dia 4: Provérbios 3",
-    "Dia 5: Mateus 5", "Dia 6: Mateus 6", "Dia 7: Mateus 7", "Dia 8: João 1",
-    "Dia 9: João 3", "Dia 10: João 14", "Dia 11: Romanos 8", "Dia 12: 1 Coríntios 13",
-    "Dia 13: Filipenses 4", "Dia 14: Colossenses 3", "Dia 15: Efésios 6",
-    "Dia 16: Tiago 1", "Dia 17: Tiago 3", "Dia 18: 1 Pedro 5", "Dia 19: 1 João 1",
-    "Dia 20: 1 João 4", "Dia 21: Salmo 27", "Dia 22: Salmo 121", "Dia 23: Isaías 40",
-    "Dia 24: Isaías 41", "Dia 25: Jeremias 29", "Dia 26: Lucas 15", "Dia 27: Atos 2",
-    "Dia 28: Atos 4", "Dia 29: Romanos 12", "Dia 30: Apocalipse 21"
-  ];
-
-  // ---------- Verse of day ----------
-  function dayOfYear(d=new Date()){
-    const start = new Date(d.getFullYear(), 0, 0);
-    const diff = d - start;
-    return Math.floor(diff / 86400000);
-  }
-  let verseIndex = store.get('verseIndex', null);
-  function setVerseByDay(){
-    const i = (dayOfYear() - 1) % verses.length;
-    verseIndex = (verseIndex === null) ? i : verseIndex;
-    renderVerse();
-  }
-  function renderVerse(){
-    const v = verses[verseIndex];
-    document.getElementById('verseText').textContent = "“" + v.text + "”";
-    document.getElementById('verseRef').textContent = v.ref;
-    const dev = devotionals[dayOfYear() % devotionals.length];
-    document.getElementById('devTitle').textContent = "Devocional: " + dev.title;
-    document.getElementById('devText').textContent = dev.text;
-    store.set('verseIndex', verseIndex);
-  }
-  function nextVerse(){
-    verseIndex = (verseIndex + 1) % verses.length;
-    renderVerse();
-  }
-  async function copyVerse(){
-    const v = verses[verseIndex];
-    const txt = `${v.text} — ${v.ref}`;
-    try { await navigator.clipboard.writeText(txt); toast("Copiado ✅"); } catch { alert(txt); }
-  }
-  async function shareVerse(){
-    const v = verses[verseIndex];
-    const txt = `${v.text}\n— ${v.ref}`;
-    if (navigator.share) {
-      try { await navigator.share({title:"Versículo", text: txt}); } catch {}
-    } else {
-      await copyVerse();
-    }
-  }
-
-  // ---------- Plan ----------
-  function getPlan(){
-    return store.get('plan', {done:[], startedAt: new Date().toISOString()});
-  }
-  function setPlan(p){ store.set('plan', p); renderPlan(); }
-  function todayIndex(){
-    const p = getPlan();
-    const start = new Date(p.startedAt);
-    const days = Math.max(0, Math.floor((new Date() - start)/86400000));
-    return Math.min(plan30.length-1, days);
-  }
-  function markTodayDone(){
-    const p = getPlan();
-    const i = todayIndex();
-    if (!p.done.includes(i)) p.done.push(i);
-    // Week streak: count last 7 days
-    setPlan(p);
-    toast("Dia marcado ✅");
-  }
-  function resetPlan(){
-    if (!confirm("Reiniciar o plano?")) return;
-    setPlan({done:[], startedAt: new Date().toISOString()});
-  }
-  function renderPlan(){
-    const p = getPlan();
-    const i = todayIndex();
-    const doneCount = p.done.length;
-    const pct = Math.round((doneCount/plan30.length)*100);
-    document.getElementById('planSubtitle').textContent = `Dia ${i+1} de ${plan30.length}`;
-    document.getElementById('planPct').textContent = `${pct}%`;
-    document.getElementById('planTodayText').textContent =
-      (p.done.includes(i) ? "✅ Feito hoje: " : "⏳ Leitura de hoje: ") + plan30[i];
-
-    // last 7 days completion
-    const last7 = [];
-    for(let k=0;k<7;k++){
-      const idx = i-k;
-      if (idx>=0) last7.push(idx);
-    }
-    const weekDone = last7.filter(x=>p.done.includes(x)).length;
-    document.getElementById('weekDone').textContent = `${weekDone}/${last7.length}`;
-  }
-
-  // ---------- Prayer ----------
-  function getPrayers(){ return store.get('prayers', []); }
-  function setPrayers(arr){ store.set('prayers', arr); renderPrayers(); }
-  function addPrayer(){
-    const title = document.getElementById('prTitle').value.trim() || "Pedido";
-    const details = document.getElementById('prText').value.trim();
-    const arr = getPrayers();
-    arr.unshift({id: crypto.randomUUID(), title, details, prayed:false, fav:false, updatedAt: new Date().toISOString()});
-    setPrayers(arr);
-    document.getElementById('prTitle').value="";
-    document.getElementById('prText').value="";
-    toast("Adicionado 🙏");
-  }
-  function togglePrayed(id){
-    const arr = getPrayers().map(p=>{
-      if (p.id===id){ p.prayed=!p.prayed; p.updatedAt = new Date().toISOString(); }
-      return p;
-    });
-    setPrayers(arr);
-  }
-  function toggleFav(id){
-    const arr = getPrayers().map(p=>{
-      if (p.id===id){ p.fav=!p.fav; p.updatedAt = new Date().toISOString(); }
-      return p;
-    });
-    setPrayers(arr);
-  }
-  function delPrayer(id){
-    if (!confirm("Apagar este pedido?")) return;
-    setPrayers(getPrayers().filter(p=>p.id!==id));
-  }
-  function renderPrayers(){
-    const el = document.getElementById('prList');
-    const arr = getPrayers().slice().sort((a,b)=> (b.fav - a.fav) || (new Date(b.updatedAt)-new Date(a.updatedAt)));
-    if (!arr.length){ el.innerHTML = `<div class="item"><b>Nenhum pedido ainda</b><div class="tiny">Adicione o primeiro acima.</div></div>`; return; }
-    el.innerHTML = arr.map(p=>`
-      <div class="item">
-        <div class="row">
-          <div class="left">
-            <b>${esc(p.title)} ${p.prayed ? '<span class="ok">• orei ✅</span>' : ''}</b>
-            <span>${new Date(p.updatedAt).toLocaleString()}</span>
-          </div>
-          <div style="display:flex; gap:8px">
-            <button class="ghost" onclick="toggleFav('${p.id}')">${p.fav ? '⭐' : '☆'}</button>
-            <button class="primary" onclick="togglePrayed('${p.id}')">${p.prayed ? 'Desmarcar' : 'Orei'}</button>
-          </div>
-        </div>
-        ${p.details ? `<div class="tiny" style="margin-top:10px">${esc(p.details)}</div>` : ''}
-        <div class="actions" style="margin-top:10px">
-          <button class="ghost" onclick="delPrayer('${p.id}')">Apagar</button>
-        </div>
-      </div>
-    `).join('');
-  }
-
-  // ---------- Notes ----------
-  function getNotes(){ return store.get('notes', []); }
-  function setNotes(arr){ store.set('notes', arr); renderNotes(); }
-  function addNote(){
-    const title = document.getElementById('noteTitle').value.trim() || "Sem título";
-    const text = document.getElementById('noteText').value.trim();
-    const arr = getNotes();
-    arr.unshift({id: crypto.randomUUID(), title, text, date: new Date().toISOString()});
-    setNotes(arr);
-    document.getElementById('noteTitle').value="";
-    document.getElementById('noteText').value="";
-    toast("Nota salva 📝");
-  }
-  function delNote(id){
-    if (!confirm("Apagar esta nota?")) return;
-    setNotes(getNotes().filter(n=>n.id!==id));
-  }
-  function renderNotes(){
-    const el = document.getElementById('noteList');
-    const arr = getNotes();
-    if (!arr.length){ el.innerHTML = `<div class="item"><b>Nenhuma nota ainda</b><div class="tiny">Use como seu caderno espiritual.</div></div>`; return; }
-    el.innerHTML = arr.map(n=>`
-      <div class="item">
-        <div class="row">
-          <div class="left">
-            <b>${esc(n.title)}</b>
-            <span>${new Date(n.date).toLocaleString()}</span>
-          </div>
-          <button class="ghost" onclick="delNote('${n.id}')">Apagar</button>
-        </div>
-        ${n.text ? `<div class="tiny" style="margin-top:10px; white-space:pre-wrap">${esc(n.text)}</div>` : ''}
-      </div>
-    `).join('');
-  }
-
-  // ---------- Backup ----------
-  function exportData(){
-    const payload = {
-      version: 1,
-      exportedAt: new Date().toISOString(),
-      notes: getNotes(),
-      prayers: getPrayers(),
-      plan: getPlan(),
-      verseIndex
-    };
-    const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `backup-app-cristao-${new Date().toISOString().slice(0,10)}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-    toast("Backup gerado ✅");
-  }
-  async function importData(file){
-    if (!file) return;
-    const text = await file.text();
-    try{
-      const data = JSON.parse(text);
-      if (data.notes) setNotes(data.notes);
-      if (data.prayers) setPrayers(data.prayers);
-      if (data.plan) setPlan(data.plan);
-      if (typeof data.verseIndex === 'number') { verseIndex = data.verseIndex; renderVerse(); }
-      toast("Importado ✅");
-    }catch{
-      alert("Arquivo inválido.");
-    }
-    document.getElementById('importFile').value = "";
-  }
-  function wipeAll(){
-    if (!confirm("Tem certeza que quer apagar tudo?")) return;
-    localStorage.clear();
-    location.reload();
-  }
-
-  // ---------- UI ----------
   function show(which){
-    const views = ['hoje','oracao','notas','config'];
+    const views = ['hoje','musica','oracao','imagens'];
     for (const v of views){
       document.getElementById('view-'+v).style.display = (v===which) ? 'block' : 'none';
       document.getElementById('tab-'+v).classList.toggle('active', v===which);
     }
   }
+
+  const verses = [
+    {ref:"Salmo 23:1", text:"O Senhor é o meu pastor; nada me faltará."},
+    {ref:"Mateus 6:33", text:"Buscai primeiro o Reino de Deus e a sua justiça, e todas essas coisas vos serão acrescentadas."},
+    {ref:"Filipenses 4:6", text:"Não andeis ansiosos por coisa alguma; em tudo, porém, sejam conhecidas diante de Deus as vossas petições."},
+    {ref:"Isaías 41:10", text:"Não temas, porque eu sou contigo; não te assombres, porque eu sou o teu Deus."}
+  ];
+
+  const devotionals = [
+    "Hoje, confie antes de entender. Deus guia um passo por vez.",
+    "Ore simples e continue. A paz de Cristo é maior que o medo.",
+    "Deus fortalece o coração humilde. Persevere.",
+    "Mesmo no silêncio, Deus está trabalhando por você."
+  ];
+
+  function dayOfYear(d=new Date()){
+    const start = new Date(d.getFullYear(), 0, 0);
+    return Math.floor((d - start) / 86400000);
+  }
+
+  let verseIndex = store.get('verseIndex', (dayOfYear()-1) % verses.length);
+
+  function renderVerse(){
+    const v = verses[verseIndex];
+    document.getElementById('verseText').textContent = "“" + v.text + "”";
+    document.getElementById('verseRef').textContent = v.ref;
+    document.getElementById('devText').textContent = devotionals[dayOfYear() % devotionals.length];
+    store.set('verseIndex', verseIndex);
+    updateStatus();
+  }
+
+  function nextVerse(){
+    verseIndex = (verseIndex + 1) % verses.length;
+    renderVerse();
+  }
+
+  async function copyVerse(){
+    const v = verses[verseIndex];
+    const txt = `${v.text} — ${v.ref}`;
+    try { await navigator.clipboard.writeText(txt); } catch { alert(txt); }
+  }
+
+  let timer=null, remaining=0;
+  function fmt(sec){
+    const m = Math.floor(sec/60), s = sec%60;
+    return String(m).padStart(2,'0') + ":" + String(s).padStart(2,'0');
+  }
+  function tick(){
+    document.getElementById('timerShow').textContent = fmt(remaining);
+    if(remaining<=0){
+      stopTimer();
+      alert("Tempo concluído 🙏");
+      return;
+    }
+    remaining--;
+  }
+  function startTimer(min){
+    stopTimer();
+    remaining = min*60;
+    document.getElementById('timerMsg').textContent = `Rodando: ${min} min`;
+    tick();
+    timer = setInterval(tick, 1000);
+  }
+  function stopTimer(){
+    if(timer){ clearInterval(timer); timer=null; }
+    document.getElementById('timerMsg').textContent = "";
+  }
+
   function esc(s){ return (s??'').toString().replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;"); }
 
-  // Tiny toast
-  let toastTimer=null;
-  function toast(msg){
-    const pill = document.getElementById('statusPill');
-    pill.textContent = "✅ " + msg;
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(()=> updateStatus(), 1400);
-  }
-  function updateStatus(){
-    const p = getPlan();
-    const i = todayIndex();
-    const ok = p.done.includes(i);
-    document.getElementById('statusPill').textContent = ok ? "🟢 Dia em dia" : "🟡 Pendência hoje";
+  function getPrayers(){ return store.get('prayers', []); }
+  function setPrayers(arr){ store.set('prayers', arr); renderPrayers(); updateStatus(); }
+
+  function addPrayer(){
+    const title = document.getElementById('prTitle').value.trim() || "Pedido";
+    const details = document.getElementById('prText').value.trim();
+    const arr = getPrayers();
+    arr.unshift({id: crypto.randomUUID(), title, details, date: new Date().toISOString()});
+    setPrayers(arr);
+    document.getElementById('prTitle').value="";
+    document.getElementById('prText').value="";
   }
 
-  // Init
-  setVerseByDay();
-  renderPlan();
+  function delPrayer(id){
+    if (!confirm("Apagar este pedido?")) return;
+    setPrayers(getPrayers().filter(p=>p.id!==id));
+  }
+
+  function renderPrayers(){
+    const el = document.getElementById('prList');
+    const arr = getPrayers();
+    if (!arr.length){
+      el.innerHTML = `<div class="item"><b>Nenhum pedido ainda</b><div class="tiny">Adicione o primeiro acima.</div></div>`;
+      return;
+    }
+    el.innerHTML = arr.map(p=>`
+      <div class="item">
+        <div class="row">
+          <div class="left">
+            <b>${esc(p.title)}</b>
+            <span class="tiny">${new Date(p.date).toLocaleString()}</span>
+          </div>
+          <button class="danger" onclick="delPrayer('${p.id}')">Apagar</button>
+        </div>
+        ${p.details ? `<div class="tiny" style="margin-top:10px; white-space:pre-wrap">${esc(p.details)}</div>` : ''}
+      </div>
+    `).join('');
+  }
+
+  function playUrl(){
+    const url = document.getElementById('musicUrl').value.trim();
+    if(!url) return alert("Cole um link MP3 primeiro (opcional).");
+    const player = document.getElementById('player');
+    player.src = url;
+    player.play().catch(()=>{});
+  }
+
+  function playFile(file){
+    if(!file) return;
+    const player = document.getElementById('player');
+    player.src = URL.createObjectURL(file);
+    player.play().catch(()=>{});
+  }
+
+  function getImages(){ return store.get('images', []); }
+  function setImages(arr){ store.set('images', arr); renderImages(); }
+
+  function fileToBase64(file){
+    return new Promise((resolve, reject)=>{
+      const r = new FileReader();
+      r.onload = ()=> resolve(r.result);
+      r.onerror = reject;
+      r.readAsDataURL(file);
+    });
+  }
+
+  async function saveImages(files){
+    if(!files || !files.length) return;
+    const arr = getImages();
+    for(const f of files){
+      const base64 = await fileToBase64(f);
+      arr.unshift(base64);
+    }
+    setImages(arr);
+  }
+
+  function clearImages(){
+    if(!confirm("Apagar todas as imagens?")) return;
+    setImages([]);
+  }
+
+  function renderImages(){
+    const el = document.getElementById('gallery');
+    const arr = getImages();
+    el.innerHTML = arr.map(src=> `<img src="${src}">`).join('');
+  }
+
+  function updateStatus(){
+    const prayers = getPrayers().length;
+    document.getElementById('statusPill').textContent = prayers ? `🙏 ${prayers} pedidos salvos` : "🟢 Tudo certo";
+  }
+
+  renderVerse();
   renderPrayers();
-  renderNotes();
+  renderImages();
   updateStatus();
 </script>
 </body>
