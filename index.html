@@ -2,1145 +2,772 @@
 <html lang="pt-br">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>App Cristão</title>
 
-  <!-- PWA (opcional). Se você já tem manifest/webmanifest e sw.js, pode manter. -->
-  <meta name="theme-color" content="#0B1220" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="App Cristão" />
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0B1220">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="App Cristão">
 
   <style>
     :root{
-      --bg:#070B14;
-      --card: rgba(11,18,32,.72);
-      --card2: rgba(11,18,32,.62);
+      --bg: #0B1220;
+      --card: rgba(12, 20, 38, .72);
+      --card2: rgba(12, 20, 38, .55);
       --line: rgba(255,255,255,.10);
-      --text:#EAF0FF;
-      --muted:#A7B4D6;
-      --gold:#E7C56E;
-      --good:#45E2A8;
-      --warn:#FFD36B;
-      --bad:#FF6B6B;
+      --text: #EAF0FF;
+      --muted: #A7B4D6;
       --btn: rgba(255,255,255,.08);
-      --btn2: rgba(255,255,255,.12);
-      --shadow: 0 14px 40px rgba(0,0,0,.55);
+      --btn2: rgba(255,255,255,.14);
+      --good: #45E2A8;
+      --warn: #FFD166;
+      --shadow: 0 14px 35px rgba(0,0,0,.35);
       --radius: 20px;
       --radius2: 16px;
-      --pad: 16px;
-      --max: 980px;
-      --safeTop: env(safe-area-inset-top);
-      --safeBottom: env(safe-area-inset-bottom);
+      --safe-top: env(safe-area-inset-top);
+      --safe-bot: env(safe-area-inset-bottom);
+      --safe-left: env(safe-area-inset-left);
+      --safe-right: env(safe-area-inset-right);
     }
 
-    *{ box-sizing:border-box; }
-    html,body{ height:100%; }
-
-    /* ✅ FUNDO COM SUA IMAGEM */
+    /* ===== FUNDO COM A SUA IMAGEM (APP TODO) ===== */
+    html, body { height: 100%; }
     body{
-      margin:0;
-      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-      color:var(--text);
-      background:
-        linear-gradient(180deg, rgba(2,6,16,.72), rgba(2,6,16,.86)),
-        url("imagens/C5782EF9-9488-4CB9-8285-C27D142A8118.png") no-repeat center center fixed;
-      background-size:cover;
-      overflow-x:hidden;
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Arial, sans-serif;
+
+      background: url("./imagens/C5782EF9-9488-4CB9-8285-C27D142A8118.png")
+        center center / cover no-repeat fixed;
+      background-color: #000;
+      overflow-x: hidden;
+    }
+    /* camada escura p/ texto ficar legível */
+    body::before{
+      content:"";
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(2,6,16,.50), rgba(2,6,16,.88));
+      pointer-events: none;
+      z-index: 0;
     }
 
-    /* “película” extra (fica mais legível) */
-    .veil{
-      position:fixed; inset:0;
-      background: radial-gradient(1200px 800px at 20% 0%, rgba(71,134,255,.12), transparent 55%),
-                  radial-gradient(900px 600px at 80% 10%, rgba(231,197,110,.10), transparent 55%),
-                  radial-gradient(900px 900px at 50% 100%, rgba(69,226,168,.07), transparent 60%);
-      pointer-events:none;
-      z-index:0;
-    }
-
-    .wrap{
-      position:relative;
-      z-index:1;
-      min-height:100%;
-      display:flex;
-      flex-direction:column;
-      padding: calc(var(--safeTop) + 18px) 14px calc(var(--safeBottom) + 92px);
-    }
-
-    .container{
-      width:100%;
-      max-width:var(--max);
-      margin:0 auto;
+    /* app por cima do fundo */
+    #app{
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      padding: calc(14px + var(--safe-top)) calc(14px + var(--safe-right)) calc(90px + var(--safe-bot)) calc(14px + var(--safe-left));
+      box-sizing: border-box;
     }
 
     .topbar{
       display:flex;
       align-items:center;
-      gap:12px;
-      margin-bottom:14px;
+      justify-content:space-between;
+      gap: 12px;
+      margin-bottom: 14px;
     }
-
-    .appicon{
-      width:44px;height:44px;
-      border-radius:14px;
-      background: linear-gradient(135deg, rgba(90,107,255,.9), rgba(231,197,110,.25));
-      display:grid;place-items:center;
-      box-shadow: var(--shadow);
-      border:1px solid rgba(255,255,255,.14);
-      flex:0 0 auto;
-    }
-    .appicon span{
-      font-size:22px;
-      filter: drop-shadow(0 6px 10px rgba(0,0,0,.35));
-    }
-
-    .titleblock{ flex:1; min-width:0; }
-    .titleblock h1{
-      font-size:20px; margin:0; letter-spacing:.2px;
-      line-height:1.2;
-    }
-    .subtitle{
-      margin-top:3px;
-      font-size:13px;
-      color:var(--muted);
+    .brand{
       display:flex;
-      gap:8px;
       align-items:center;
-      flex-wrap:wrap;
+      gap: 10px;
     }
-    .dot{ opacity:.6; }
+    .logo{
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: radial-gradient(circle at 30% 30%, #7C3AED, #06B6D4);
+      display:grid;
+      place-items:center;
+      box-shadow: var(--shadow);
+      flex: 0 0 auto;
+    }
+    .logo span{
+      font-size: 22px;
+      font-weight: 800;
+      line-height: 1;
+    }
+    .title{
+      display:flex;
+      flex-direction:column;
+      line-height:1.1;
+    }
+    .title b{ font-size: 18px; }
+    .title small{ color: var(--muted); font-size: 12px; margin-top: 2px; }
 
     .pill{
+      padding: 10px 12px;
+      border-radius: 999px;
       background: rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.12);
-      padding:8px 10px;
-      border-radius:999px;
-      font-size:12px;
-      color:var(--muted);
+      border: 1px solid rgba(255,255,255,.10);
       display:flex;
-      gap:8px;
       align-items:center;
-      box-shadow: 0 10px 25px rgba(0,0,0,.25);
+      gap: 8px;
+      color: var(--text);
+      box-shadow: var(--shadow);
+      user-select:none;
     }
-    .pill b{ color:var(--text); font-weight:600; }
+    .dot{
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--good);
+      box-shadow: 0 0 0 4px rgba(69,226,168,.15);
+    }
 
     .card{
       background: var(--card);
-      border:1px solid rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.10);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      padding: var(--pad);
+      padding: 16px;
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      margin-bottom:14px;
+      margin-bottom: 14px;
     }
-    .card.soft{ background: var(--card2); }
 
-    .sectiontitle{
-      font-size:13px;
-      color: var(--muted);
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      margin:0 0 10px;
+    .sectionTitle{
+      color: rgba(234,240,255,.72);
+      font-weight: 800;
+      letter-spacing: .08em;
+      font-size: 12px;
+      margin-bottom: 10px;
     }
 
     .verse{
-      font-size:30px;
-      line-height:1.18;
-      letter-spacing:-.2px;
-      margin:0 0 10px;
+      font-size: 28px;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin: 0 0 10px 0;
     }
     .ref{
-      font-size:15px;
       color: var(--muted);
-      margin-bottom:12px;
+      font-size: 16px;
+      margin-bottom: 14px;
     }
 
     .row{
       display:flex;
-      gap:10px;
-      flex-wrap:wrap;
+      gap: 10px;
+      flex-wrap: wrap;
     }
     .btn{
-      border:1px solid rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.10);
       background: var(--btn);
       color: var(--text);
-      padding:11px 14px;
-      border-radius:14px;
-      font-size:15px;
-      cursor:pointer;
-      box-shadow: 0 12px 24px rgba(0,0,0,.22);
-      transition: transform .08s ease, background .2s ease;
+      padding: 12px 14px;
+      border-radius: 14px;
+      font-weight: 700;
+      cursor: pointer;
       user-select:none;
     }
-    .btn:active{ transform: scale(.98); }
-    .btn.primary{ background: rgba(71,134,255,.18); border-color: rgba(71,134,255,.22); }
-    .btn.good{ background: rgba(69,226,168,.16); border-color: rgba(69,226,168,.22); }
-    .btn.warn{ background: rgba(255,211,107,.16); border-color: rgba(255,211,107,.22); color: #fff; }
-    .btn.small{ padding:9px 12px; font-size:14px; border-radius:12px; }
-
-    .box{
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.16);
-      border-radius: 16px;
-      padding: 12px;
-      margin-top:12px;
-    }
-    .box h3{
-      margin:0 0 6px;
-      font-size:18px;
-      letter-spacing:.2px;
-    }
-    .box p{
-      margin:0;
-      color: var(--muted);
-      line-height:1.35;
+    .btn:hover{ background: var(--btn2); }
+    .btn.primary{
+      background: rgba(69,226,168,.15);
+      border-color: rgba(69,226,168,.30);
     }
 
-    .grid2{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:14px;
-    }
-    @media(min-width:820px){
-      .grid2{ grid-template-columns: 1.1fr .9fr; }
-    }
-
-    .input, .textarea, select{
-      width:100%;
-      background: rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.12);
-      color: var(--text);
-      border-radius: 14px;
-      padding: 12px 12px;
-      outline:none;
-      font-size:15px;
-    }
-    .textarea{ min-height:110px; resize:vertical; }
-
-    .list{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      margin-top:12px;
-    }
-    .item{
-      background: rgba(0,0,0,.16);
+    .subcard{
+      margin-top: 12px;
+      padding: 14px;
+      border-radius: var(--radius2);
+      background: var(--card2);
       border: 1px solid rgba(255,255,255,.10);
-      border-radius: 16px;
-      padding: 12px;
     }
-    .item .meta{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      justify-content:space-between;
+    .subcard h3{
+      margin: 0 0 6px 0;
+      font-size: 20px;
+    }
+    .subcard p{
+      margin: 0;
       color: var(--muted);
-      font-size:13px;
-      margin-top:6px;
+      line-height: 1.35;
     }
-    .tag{
-      padding: 5px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      color: var(--muted);
-      font-size:12px;
-    }
-    .tag.good{ border-color: rgba(69,226,168,.26); background: rgba(69,226,168,.12); color:#d7ffef; }
-    .tag.warn{ border-color: rgba(255,211,107,.26); background: rgba(255,211,107,.12); color:#fff3cf; }
 
-    /* Galeria */
-    .gallery{
+    /* GALERIA */
+    .grid{
       display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:10px;
-      margin-top:12px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 10px;
     }
-    @media(min-width:700px){
-      .gallery{ grid-template-columns: 1fr 1fr 1fr; }
-    }
-    .gimg{
-      border-radius:16px;
+    .imgTile{
+      border-radius: 16px;
       overflow:hidden;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.18);
-      box-shadow: 0 14px 30px rgba(0,0,0,.35);
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.25);
+      box-shadow: var(--shadow);
       cursor:pointer;
     }
-    .gimg img{
+    .imgTile img{
       width:100%;
-      height:160px;
-      object-fit:cover;
+      height: 150px;
+      object-fit: cover;
       display:block;
+      transform: scale(1.02);
     }
-    .gcap{
-      padding:10px;
+    .imgTile small{
+      display:block;
+      padding: 8px 10px;
       color: var(--muted);
-      font-size:13px;
-      border-top:1px solid rgba(255,255,255,.08);
+      font-size: 12px;
+      border-top: 1px solid rgba(255,255,255,.08);
     }
 
-    /* Modal imagem */
+    /* modal imagem */
     .modal{
-      position:fixed; inset:0;
-      background: rgba(0,0,0,.70);
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(0,0,0,.75);
       display:none;
       align-items:center;
       justify-content:center;
-      z-index:50;
       padding: 18px;
     }
     .modal.open{ display:flex; }
-    .modalbox{
-      max-width: 980px;
-      width:100%;
-      background: rgba(11,18,32,.82);
-      border: 1px solid rgba(255,255,255,.14);
-      border-radius: 22px;
+    .modalBox{
+      width: min(980px, 100%);
+      max-height: 92vh;
+      border-radius: 18px;
       overflow:hidden;
-      box-shadow: 0 25px 60px rgba(0,0,0,.55);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.35);
+      box-shadow: 0 25px 80px rgba(0,0,0,.55);
     }
-    .modalimg{
-      width:100%;
-      max-height: 70vh;
-      object-fit:contain;
-      background: rgba(0,0,0,.25);
-      display:block;
-    }
-    .modalbar{
+    .modalTop{
       display:flex;
-      gap:10px;
       justify-content:space-between;
       align-items:center;
-      padding: 12px;
-      border-top:1px solid rgba(255,255,255,.10);
-      color: var(--muted);
-      font-size:13px;
+      gap: 10px;
+      padding: 10px 12px;
+      background: rgba(12, 20, 38, .65);
+      border-bottom: 1px solid rgba(255,255,255,.10);
+    }
+    .modalTop b{ font-size: 14px; color: var(--text); }
+    .modalTop button{
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.08);
+      color: var(--text);
+      cursor:pointer;
+      font-weight: 800;
+    }
+    .modalImg{
+      width:100%;
+      max-height: calc(92vh - 48px);
+      object-fit: contain;
+      display:block;
+      background: rgba(0,0,0,.35);
     }
 
-    /* Tabs bottom */
-    .tabs{
-      position:fixed;
-      left:0; right:0;
-      bottom:0;
-      padding: 10px 12px calc(var(--safeBottom) + 10px);
-      z-index:40;
-      background: linear-gradient(180deg, transparent, rgba(0,0,0,.55));
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+    /* inputs */
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap: 6px;
+      margin-top: 10px;
     }
-    .tabbar{
-      width:100%;
-      max-width:var(--max);
-      margin:0 auto;
-      background: rgba(11,18,32,.70);
-      border:1px solid rgba(255,255,255,.12);
-      border-radius: 20px;
+    label{
+      color: rgba(234,240,255,.8);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    input, textarea{
+      width: 100%;
+      box-sizing: border-box;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.18);
+      color: var(--text);
+      padding: 12px 12px;
+      outline: none;
+      font-size: 15px;
+    }
+    textarea{ min-height: 110px; resize: vertical; }
+    .hint{ color: var(--muted); font-size: 12px; margin-top: 8px; }
+
+    /* lista */
+    .list{
+      margin-top: 10px;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+    }
+    .item{
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+    }
+    .itemTop{
       display:flex;
       justify-content:space-between;
-      padding: 10px 8px;
-      box-shadow: 0 22px 45px rgba(0,0,0,.55);
+      gap: 10px;
+      align-items:flex-start;
+    }
+    .item b{ display:block; margin-bottom: 4px; }
+    .item small{ color: var(--muted); }
+    .item .x{
+      flex: 0 0 auto;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 8px 10px;
+      cursor:pointer;
+      font-weight: 900;
+    }
+
+    /* bottom nav */
+    .bottomNav{
+      position: fixed;
+      left: 0; right: 0;
+      bottom: 0;
+      padding: 10px calc(12px + var(--safe-right)) calc(10px + var(--safe-bot)) calc(12px + var(--safe-left));
+      z-index: 50;
+      background: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.55));
+      pointer-events: none;
+    }
+    .tabs{
+      pointer-events: auto;
+      display:flex;
+      gap: 10px;
+      justify-content:space-between;
+      background: rgba(12, 20, 38, .70);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 22px;
+      padding: 10px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: var(--shadow);
     }
     .tab{
-      flex:1;
+      flex: 1 1 0;
+      border-radius: 16px;
+      padding: 10px 8px;
       display:flex;
       flex-direction:column;
       align-items:center;
-      gap:6px;
-      color: var(--muted);
-      font-size:12px;
-      padding: 8px 6px;
-      border-radius: 16px;
+      gap: 6px;
+      color: rgba(234,240,255,.70);
+      font-weight: 800;
+      font-size: 12px;
       cursor:pointer;
       user-select:none;
     }
-    .tab .ico{ font-size:20px; }
+    .tab span{ font-size: 18px; }
     .tab.active{
       background: rgba(255,255,255,.08);
       color: var(--text);
-      border: 1px solid rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.12);
     }
 
-    .hidden{ display:none !important; }
+    /* telas */
+    .screen{ display:none; }
+    .screen.active{ display:block; }
 
-    .hint{
-      margin-top:10px;
-      color: var(--muted);
-      font-size:13px;
-      line-height:1.35;
-    }
-
-    .smallnote{
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-      margin-top:10px;
-      color: var(--muted);
-      font-size:13px;
-    }
-    .smallnote span{ display:flex; gap:8px; align-items:center; }
-
-    .hr{
-      height:1px;
-      background: rgba(255,255,255,.10);
-      margin: 12px 0;
+    @media (min-width: 760px){
+      .grid{ grid-template-columns: repeat(3, 1fr); }
+      .imgTile img{ height: 180px; }
+      .verse{ font-size: 32px; }
     }
   </style>
 </head>
 
 <body>
-  <div class="veil"></div>
-
-  <div class="wrap">
-    <div class="container">
-
-      <div class="topbar">
-        <div class="appicon"><span>✝️</span></div>
-        <div class="titleblock">
-          <h1>App Cristão</h1>
-          <div class="subtitle">
-            <span>Seu devocional pessoal</span>
-            <span class="dot">•</span>
-            <span id="offlineStatus">offline</span>
-          </div>
+  <div id="app">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo"><span>✝</span></div>
+        <div class="title">
+          <b>App Cristão</b>
+          <small>Seu devocional pessoal • offline</small>
         </div>
-        <div class="pill"><span>🟡</span><b id="pendencia">Pendência</b> <span>hoje</span></div>
       </div>
 
-      <!-- ====== PÁGINAS ====== -->
-
-      <!-- HOJE -->
-      <section id="page-hoje">
-        <div class="card">
-          <div class="sectiontitle">HOJE</div>
-          <p class="verse" id="verseText">“...”</p>
-          <div class="ref" id="verseRef">—</div>
-
-          <div class="row">
-            <button class="btn primary" id="btnTrocar">Trocar</button>
-            <button class="btn" id="btnCompartilhar">Compartilhar</button>
-            <button class="btn" id="btnCopiar">Copiar</button>
-          </div>
-
-          <div class="box">
-            <h3 id="devTitle">Devocional: —</h3>
-            <p id="devText">—</p>
-
-            <div class="smallnote">
-              <span>💾 Salva no seu iPhone</span>
-              <span>🟧 Funciona offline</span>
-              <span>🧩 Lembrete: Atalhos</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="card soft">
-          <div class="sectiontitle">Plano de leitura</div>
-          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;">
-            <div>
-              <div style="font-size:22px;font-weight:700;margin-bottom:4px;">Plano “30 dias”</div>
-              <div style="color:var(--muted);">Dia <span id="planoDia">1</span> de 30</div>
-            </div>
-            <div style="color:var(--muted); font-weight:700;" id="planoPct">0%</div>
-          </div>
-
-          <div class="row" style="margin-top:12px;">
-            <button class="btn good" id="btnFeito">Marcar “feito”</button>
-            <button class="btn" id="btnReiniciar">Reiniciar</button>
-          </div>
-
-          <div class="hint">Dica: esse progresso fica salvo no seu iPhone (offline).</div>
-        </div>
-      </section>
-
-      <!-- ORAÇÃO -->
-      <section id="page-oracao" class="hidden">
-        <div class="card">
-          <div class="sectiontitle">Pedidos de oração</div>
-
-          <div class="grid2">
-            <div>
-              <input class="input" id="prayTitle" placeholder="Título (ex: Família, Saúde, Trabalho)" />
-              <div style="height:10px;"></div>
-              <textarea class="textarea" id="prayText" placeholder="Escreva o pedido..."></textarea>
-              <div class="row" style="margin-top:12px;">
-                <button class="btn good" id="btnAddPrayer">Salvar pedido</button>
-                <button class="btn" id="btnClearPrayerForm">Limpar</button>
-              </div>
-              <div class="hint">Tudo fica salvo no aparelho (localStorage). Não envia pra internet.</div>
-            </div>
-
-            <div>
-              <div class="box">
-                <h3>Versículo para oração</h3>
-                <p id="prayVerse">“Não andeis ansiosos por coisa alguma...” (Fp 4:6-7)</p>
-                <div class="hr"></div>
-                <div class="row">
-                  <button class="btn primary small" id="btnNextPrayVerse">Trocar</button>
-                  <button class="btn small" id="btnCopyPrayVerse">Copiar</button>
-                </div>
-              </div>
-
-              <div class="box" style="margin-top:12px;">
-                <h3>Checklist rápido</h3>
-                <p>• Agradecer • Confessar • Pedir • Interceder • Ouvir</p>
-                <div class="hint">Você pode registrar pedidos e marcar como “Respondido”.</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="list" id="prayerList"></div>
-        </div>
-      </section>
-
-      <!-- MÚSICA -->
-      <section id="page-musica" class="hidden">
-        <div class="card">
-          <div class="sectiontitle">Música</div>
-
-          <div class="box">
-            <h3>Player</h3>
-            <p style="color:var(--muted); margin-bottom:10px;">Cole um link direto de <b>MP3</b> (ex: um arquivo .mp3) e salve na playlist.</p>
-            <audio id="player" controls style="width:100%;"></audio>
-            <div class="hr"></div>
-
-            <input class="input" id="musicName" placeholder="Nome da música (ex: Louvor 1)" />
-            <div style="height:10px;"></div>
-            <input class="input" id="musicUrl" placeholder="Link direto do mp3 (https://.../musica.mp3)" />
-            <div class="row" style="margin-top:12px;">
-              <button class="btn good" id="btnAddMusic">Adicionar na playlist</button>
-              <button class="btn" id="btnClearMusic">Limpar</button>
-            </div>
-
-            <div class="hint">
-              ⚠️ YouTube não funciona aqui porque não é link direto de áudio.  
-              Se você tiver mp3 no Drive/Dropbox/servidor, aí funciona.
-            </div>
-          </div>
-
-          <div class="list" id="musicList"></div>
-        </div>
-      </section>
-
-      <!-- IMAGENS -->
-      <section id="page-imagens" class="hidden">
-        <div class="card">
-          <div class="sectiontitle">Imagens</div>
-          <div class="hint">
-            Essas imagens ficam dentro do seu repositório em <b>/imagens</b>.
-            Quando você enviar mais imagens pro GitHub, é só adicionar o nome aqui na lista (no código) ou me mandar que eu monto a lista inteira.
-          </div>
-
-          <div class="gallery" id="gallery"></div>
-        </div>
-      </section>
-
-      <!-- NOTAS -->
-      <section id="page-notas" class="hidden">
-        <div class="card">
-          <div class="sectiontitle">Notas</div>
-          <input class="input" id="noteTitle" placeholder="Título da nota" />
-          <div style="height:10px;"></div>
-          <textarea class="textarea" id="noteText" placeholder="Escreva aqui..."></textarea>
-          <div class="row" style="margin-top:12px;">
-            <button class="btn good" id="btnSaveNote">Salvar nota</button>
-            <button class="btn" id="btnClearNote">Limpar</button>
-          </div>
-          <div class="list" id="notesList"></div>
-        </div>
-      </section>
-
-      <!-- CONFIG -->
-      <section id="page-config" class="hidden">
-        <div class="card">
-          <div class="sectiontitle">Configurações</div>
-
-          <div class="box">
-            <h3>Fundo do app</h3>
-            <p>Já está usando esta imagem:</p>
-            <p style="margin-top:6px;color:var(--gold); font-weight:700;">
-              imagens/C5782EF9-9488-4CB9-8285-C27D142A8118.png
-            </p>
-            <div class="hint">Se você quiser trocar o fundo depois, basta enviar outra imagem para /imagens e mudar o caminho no CSS.</div>
-          </div>
-
-          <div class="box" style="margin-top:12px;">
-            <h3>Dados do app</h3>
-            <p>Pedidos de oração, notas, playlist e progresso ficam salvos no iPhone.</p>
-            <div class="row" style="margin-top:12px;">
-              <button class="btn warn" id="btnResetAll">Apagar tudo</button>
-              <button class="btn" id="btnExport">Exportar (copiar)</button>
-            </div>
-            <div class="hint">“Apagar tudo” remove os dados do armazenamento local do navegador.</div>
-          </div>
-
-          <div class="box" style="margin-top:12px;">
-            <h3>Ajuda rápida</h3>
-            <p><b>Se não atualizar:</b> abra com <code>?v=123</code> no final da URL para forçar atualização.</p>
-            <p style="margin-top:8px;"><b>Para virar app:</b> Safari → Compartilhar → “Adicionar à Tela de Início”.</p>
-          </div>
-        </div>
-      </section>
-
+      <div class="pill" id="statusPill">
+        <span class="dot" id="statusDot"></span>
+        <span id="statusText">Dia em dia</span>
+      </div>
     </div>
-  </div>
 
-  <!-- Modal -->
-  <div class="modal" id="modal">
-    <div class="modalbox">
-      <img id="modalImg" class="modalimg" src="" alt="Imagem" />
-      <div class="modalbar">
-        <div id="modalCap">—</div>
+    <!-- ===== HOJE ===== -->
+    <section class="screen active" id="screen-hoje">
+      <div class="card">
+        <div class="sectionTitle">HOJE</div>
+
+        <p class="verse" id="verseText">“Deixo-vos a paz, a minha paz vos dou; não vo-la dou como o mundo a dá.”</p>
+        <div class="ref" id="verseRef">João 14:27</div>
+
         <div class="row">
-          <button class="btn small" id="btnCloseModal">Fechar</button>
-          <button class="btn small" id="btnCopyImgLink">Copiar link</button>
+          <button class="btn primary" id="btnTrocar">Trocar</button>
+          <button class="btn" id="btnCompartilhar">Compartilhar</button>
+          <button class="btn" id="btnCopiar">Copiar</button>
+        </div>
+
+        <div class="subcard">
+          <h3 id="devoTitle">Devocional: Coragem</h3>
+          <p id="devoText">Coragem não é ausência de medo; é fidelidade apesar do medo. Dê o próximo passo com Deus.</p>
+        </div>
+
+        <div class="hint">📌 Dica: adicione à tela inicial no Safari para ficar como app.</div>
+      </div>
+
+      <div class="card">
+        <div class="sectionTitle">GALERIA</div>
+        <div class="hint">As imagens abaixo são lidas da sua lista. (Você pode adicionar mais no código.)</div>
+        <div class="grid" id="galleryGrid"></div>
+      </div>
+
+      <div class="card">
+        <div class="sectionTitle">MÚSICA</div>
+        <div class="hint">Cole um link de MP3 (ou hospede um mp3 no GitHub e use o link direto).</div>
+
+        <div class="field">
+          <label>Link do áudio (mp3)</label>
+          <input id="audioUrl" placeholder="https://.../musica.mp3" />
+        </div>
+
+        <div class="row" style="margin-top:10px;">
+          <button class="btn primary" id="btnSalvarAudio">Salvar</button>
+          <button class="btn" id="btnLimparAudio">Limpar</button>
+        </div>
+
+        <div class="subcard" style="margin-top:12px;">
+          <audio id="audioPlayer" controls style="width:100%;"></audio>
+          <div class="hint" style="margin-top:10px;">Se o áudio não tocar, o link pode não ser “direto” para mp3.</div>
         </div>
       </div>
+    </section>
+
+    <!-- ===== ORAÇÃO ===== -->
+    <section class="screen" id="screen-oracao">
+      <div class="card">
+        <div class="sectionTitle">PEDIDOS DE ORAÇÃO</div>
+
+        <div class="field">
+          <label>Nome / Motivo</label>
+          <input id="prayTitle" placeholder="Ex: Família, Saúde, Trabalho..." />
+        </div>
+
+        <div class="field">
+          <label>Detalhes</label>
+          <textarea id="prayText" placeholder="Escreva aqui seu pedido..."></textarea>
+        </div>
+
+        <div class="row" style="margin-top:10px;">
+          <button class="btn primary" id="btnAddPrayer">Adicionar</button>
+          <button class="btn" id="btnClearPrayers">Apagar todos</button>
+        </div>
+
+        <div class="list" id="prayerList"></div>
+      </div>
+    </section>
+
+    <!-- ===== NOTAS ===== -->
+    <section class="screen" id="screen-notas">
+      <div class="card">
+        <div class="sectionTitle">NOTAS</div>
+        <div class="hint">Suas anotações ficam salvas no aparelho.</div>
+
+        <div class="field">
+          <label>Minha nota</label>
+          <textarea id="notesBox" placeholder="Escreva suas anotações..."></textarea>
+        </div>
+
+        <div class="row" style="margin-top:10px;">
+          <button class="btn primary" id="btnSaveNotes">Salvar</button>
+          <button class="btn" id="btnClearNotes">Limpar</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CONFIG ===== -->
+    <section class="screen" id="screen-config">
+      <div class="card">
+        <div class="sectionTitle">CONFIG</div>
+
+        <div class="field">
+          <label>Status</label>
+          <input id="statusInput" placeholder="Ex: Dia em dia / Pendência hoje / Offline..." />
+        </div>
+
+        <div class="row" style="margin-top:10px;">
+          <button class="btn primary" id="btnSaveStatus">Salvar</button>
+          <button class="btn" id="btnGoHome">Ir para Hoje</button>
+        </div>
+
+        <div class="subcard" style="margin-top:12px;">
+          <h3>Plano simples</h3>
+          <p>Você pode evoluir esse app depois (mais imagens, músicas locais, etc.).</p>
+        </div>
+
+        <div class="hint" style="margin-top:12px;">
+          Se você estiver usando <b>sw.js</b> (offline), às vezes precisa atualizar cache para ver mudanças.
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Bottom nav -->
+  <div class="bottomNav">
+    <div class="tabs">
+      <div class="tab active" data-go="hoje"><span>🏠</span>Hoje</div>
+      <div class="tab" data-go="oracao"><span>🙏</span>Oração</div>
+      <div class="tab" data-go="notas"><span>📝</span>Notas</div>
+      <div class="tab" data-go="config"><span>⚙️</span>Config</div>
     </div>
   </div>
 
-  <!-- Tabs -->
-  <div class="tabs">
-    <div class="tabbar">
-      <div class="tab active" data-tab="hoje"><div class="ico">🏠</div><div>Hoje</div></div>
-      <div class="tab" data-tab="oracao"><div class="ico">🙏</div><div>Oração</div></div>
-      <div class="tab" data-tab="musica"><div class="ico">🎵</div><div>Música</div></div>
-      <div class="tab" data-tab="imagens"><div class="ico">🖼️</div><div>Imagens</div></div>
-      <div class="tab" data-tab="notas"><div class="ico">📝</div><div>Notas</div></div>
-      <div class="tab" data-tab="config"><div class="ico">⚙️</div><div>Config</div></div>
+  <!-- Modal imagem -->
+  <div class="modal" id="imgModal">
+    <div class="modalBox">
+      <div class="modalTop">
+        <b id="modalTitle">Imagem</b>
+        <button id="modalClose">Fechar</button>
+      </div>
+      <img class="modalImg" id="modalImg" alt="Imagem" />
     </div>
   </div>
 
   <script>
-    // ===== Util =====
+    // ========= OFFLINE (se você já tem sw.js no repo) =========
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("./sw.js").catch(()=>{});
+    }
+
+    // ========= UTIL =========
     const $ = (q) => document.querySelector(q);
-    const $$ = (q) => Array.from(document.querySelectorAll(q));
-
+    const $$ = (q) => [...document.querySelectorAll(q)];
     const store = {
-      get(k, fallback){
-        try{
-          const v = localStorage.getItem(k);
-          return v ? JSON.parse(v) : fallback;
-        }catch(e){
-          return fallback;
-        }
+      get(key, fallback){
+        try{ return JSON.parse(localStorage.getItem(key)) ?? fallback; }catch{ return fallback; }
       },
-      set(k, v){
-        localStorage.setItem(k, JSON.stringify(v));
-      },
-      del(k){
-        localStorage.removeItem(k);
+      set(key, value){
+        localStorage.setItem(key, JSON.stringify(value));
       }
     };
 
-    function nowISO(){
-      return new Date().toISOString();
-    }
-
-    function fmtDate(iso){
-      try{
-        const d = new Date(iso);
-        return d.toLocaleString('pt-BR',{dateStyle:'short', timeStyle:'short'});
-      }catch(e){
-        return iso;
-      }
-    }
-
-    async function copyText(t){
-      try{
-        await navigator.clipboard.writeText(t);
-        toast("Copiado!");
-      }catch(e){
-        // fallback
-        const ta = document.createElement('textarea');
-        ta.value = t;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        ta.remove();
-        toast("Copiado!");
-      }
-    }
-
-    function toast(msg){
-      // toast simples
-      const el = document.createElement('div');
-      el.textContent = msg;
-      el.style.position='fixed';
-      el.style.left='50%';
-      el.style.bottom='110px';
-      el.style.transform='translateX(-50%)';
-      el.style.padding='10px 14px';
-      el.style.borderRadius='999px';
-      el.style.background='rgba(0,0,0,.65)';
-      el.style.border='1px solid rgba(255,255,255,.14)';
-      el.style.color='#fff';
-      el.style.zIndex='99';
-      el.style.backdropFilter='blur(6px)';
-      el.style.webkitBackdropFilter='blur(6px)';
-      el.style.boxShadow='0 20px 40px rgba(0,0,0,.55)';
-      document.body.appendChild(el);
-      setTimeout(()=>{ el.style.opacity='0'; el.style.transition='opacity .25s'; }, 1400);
-      setTimeout(()=> el.remove(), 1750);
-    }
-
-    // ===== Offline status =====
-    function updateNet(){
+    // ========= STATUS =========
+    function setOnlineUI(){
       const online = navigator.onLine;
-      $("#offlineStatus").textContent = online ? "online" : "offline";
+      $("#statusDot").style.background = online ? "var(--good)" : "var(--warn)";
+      $("#statusDot").style.boxShadow = online ? "0 0 0 4px rgba(69,226,168,.15)" : "0 0 0 4px rgba(255,209,102,.15)";
+      const saved = store.get("statusText", "Dia em dia");
+      $("#statusText").textContent = online ? saved : "Offline";
     }
-    window.addEventListener('online', updateNet);
-    window.addEventListener('offline', updateNet);
-    updateNet();
+    window.addEventListener("online", setOnlineUI);
+    window.addEventListener("offline", setOnlineUI);
 
-    // ===== Tabs =====
-    const pages = {
-      hoje: $("#page-hoje"),
-      oracao: $("#page-oracao"),
-      musica: $("#page-musica"),
-      imagens: $("#page-imagens"),
-      notas: $("#page-notas"),
-      config: $("#page-config"),
-    };
-
-    function showTab(key){
-      Object.entries(pages).forEach(([k, el])=>{
-        el.classList.toggle('hidden', k !== key);
-      });
-      $$(".tab").forEach(t=>{
-        t.classList.toggle('active', t.dataset.tab === key);
-      });
-      store.set("ui.lastTab", key);
-    }
-
-    $$(".tab").forEach(t=>{
-      t.addEventListener('click', ()=> showTab(t.dataset.tab));
-    });
-
-    showTab(store.get("ui.lastTab","hoje"));
-
-    // ===== HOJE: Versos + devocionais =====
+    // ========= DEVOCIONAL / VERSOS =========
     const verses = [
-      { t: "“Deixo-vos a paz, a minha paz vos dou; não vo-la dou como o mundo a dá.”", r:"João 14:27", dTitle:"Devocional: Coragem", dText:"Coragem não é ausência de medo; é fidelidade apesar do medo. Dê o próximo passo com Deus." },
-      { t: "“O Senhor é o meu pastor; nada me faltará.”", r:"Salmo 23:1", dTitle:"Devocional: Confiança", dText:"Quando Deus guia, até o vale tem propósito. Confie no cuidado dEle hoje." },
-      { t: "“Posso todas as coisas naquele que me fortalece.”", r:"Filipenses 4:13", dTitle:"Devocional: Força", dText:"Você não caminha sozinho. A força de Cristo sustenta quando a sua falha." },
-      { t: "“Porque eu bem sei os planos que tenho para vós...”", r:"Jeremias 29:11", dTitle:"Devocional: Esperança", dText:"Deus escreve história com futuro e esperança, mesmo quando o presente parece confuso." },
-      { t: "“Entrega o teu caminho ao Senhor; confia nele, e ele o fará.”", r:"Salmo 37:5", dTitle:"Devocional: Entrega", dText:"Entregar não é desistir: é confiar a direção a Quem enxerga o fim desde o começo." }
+      { text: "“Deixo-vos a paz, a minha paz vos dou; não vo-la dou como o mundo a dá.”", ref: "João 14:27", devoTitle:"Devocional: Coragem", devoText:"Coragem não é ausência de medo; é fidelidade apesar do medo. Dê o próximo passo com Deus." },
+      { text: "“O Senhor é o meu pastor; nada me faltará.”", ref: "Salmos 23:1", devoTitle:"Devocional: Confiança", devoText:"Quando Deus guia, a alma descansa. Confie na direção dEle hoje." },
+      { text: "“Tudo posso naquele que me fortalece.”", ref: "Filipenses 4:13", devoTitle:"Devocional: Força", devoText:"Não é sobre a sua capacidade, é sobre a força que vem do Alto." },
+      { text: "“Lâmpada para os meus pés é a tua palavra.”", ref: "Salmos 119:105", devoTitle:"Devocional: Direção", devoText:"Um passo de cada vez, iluminado pela Palavra." },
     ];
 
-    let verseIndex = store.get("hoje.verseIndex", 0);
-
-    function renderHoje(){
-      const v = verses[verseIndex % verses.length];
-      $("#verseText").textContent = v.t;
-      $("#verseRef").textContent = v.r;
-      $("#devTitle").textContent = v.dTitle;
-      $("#devText").textContent = v.dText;
-
-      // pendência (apenas visual)
-      const done = store.get("plano.doneDays", 0);
-      $("#pendencia").textContent = done >= 1 ? "Em dia" : "Pendência";
-      $("#pendencia").style.color = done >= 1 ? "var(--good)" : "var(--warn)";
+    function renderVerse(i){
+      const v = verses[i];
+      $("#verseText").textContent = v.text;
+      $("#verseRef").textContent = v.ref;
+      $("#devoTitle").textContent = v.devoTitle;
+      $("#devoText").textContent = v.devoText;
+      store.set("verseIndex", i);
     }
 
-    $("#btnTrocar").addEventListener('click', ()=>{
-      verseIndex = (verseIndex + 1) % verses.length;
-      store.set("hoje.verseIndex", verseIndex);
-      renderHoje();
-    });
+    // ========= GALERIA (ADICIONE SUAS IMAGENS AQUI) =========
+    // Coloque TODAS as suas imagens dentro da pasta /imagens e liste aqui:
+    const galleryImages = [
+      { src: "./imagens/C5782EF9-9488-4CB9-8285-C27D142A8118.png", title: "Imagem 1" },
 
-    $("#btnCopiar").addEventListener('click', ()=>{
-      const txt = `${$("#verseText").textContent}\n${$("#verseRef").textContent}\n\n${$("#devTitle").textContent}\n${$("#devText").textContent}`;
-      copyText(txt);
-    });
-
-    $("#btnCompartilhar").addEventListener('click', async ()=>{
-      const txt = `${$("#verseText").textContent}\n${$("#verseRef").textContent}\n\n${$("#devTitle").textContent}\n${$("#devText").textContent}`;
-      try{
-        if(navigator.share){
-          await navigator.share({ title:"App Cristão", text: txt });
-        }else{
-          await copyText(txt);
-        }
-      }catch(e){
-        await copyText(txt);
-      }
-    });
-
-    // ===== Plano 30 dias =====
-    function renderPlano(){
-      let done = store.get("plano.doneDays", 0);
-      done = Math.max(0, Math.min(30, done));
-      const pct = Math.round((done/30)*100);
-      $("#planoDia").textContent = (done+1 > 30 ? 30 : done+1);
-      $("#planoPct").textContent = `${pct}%`;
-    }
-
-    $("#btnFeito").addEventListener('click', ()=>{
-      let done = store.get("plano.doneDays", 0);
-      if(done < 30) done++;
-      store.set("plano.doneDays", done);
-      renderPlano();
-      renderHoje();
-      toast("Dia marcado!");
-    });
-
-    $("#btnReiniciar").addEventListener('click', ()=>{
-      store.set("plano.doneDays", 0);
-      renderPlano();
-      renderHoje();
-      toast("Plano reiniciado.");
-    });
-
-    renderPlano();
-    renderHoje();
-
-    // ===== ORAÇÃO =====
-    const prayVerses = [
-      "“Não andeis ansiosos por coisa alguma...” (Fp 4:6-7)",
-      "“Clama a mim, e responder-te-ei...” (Jr 33:3)",
-      "“Orai sem cessar.” (1Ts 5:17)",
-      "“Perto está o Senhor dos que têm o coração quebrantado.” (Sl 34:18)",
-      "“Tudo quanto pedirdes em oração, crendo, recebereis.” (Mt 21:22)"
-    ];
-    let prayVerseIndex = store.get("pray.verseIndex", 0);
-    function renderPrayVerse(){
-      $("#prayVerse").textContent = prayVerses[prayVerseIndex % prayVerses.length];
-    }
-    $("#btnNextPrayVerse").addEventListener('click', ()=>{
-      prayVerseIndex = (prayVerseIndex + 1) % prayVerses.length;
-      store.set("pray.verseIndex", prayVerseIndex);
-      renderPrayVerse();
-    });
-    $("#btnCopyPrayVerse").addEventListener('click', ()=>{
-      copyText($("#prayVerse").textContent);
-    });
-    renderPrayVerse();
-
-    function getPrayers(){
-      return store.get("prayers.items", []);
-    }
-    function setPrayers(items){
-      store.set("prayers.items", items);
-    }
-
-    function renderPrayers(){
-      const list = $("#prayerList");
-      const items = getPrayers();
-
-      if(items.length === 0){
-        list.innerHTML = `<div class="hint">Sem pedidos ainda. Crie o primeiro acima 🙏</div>`;
-        return;
-      }
-
-      list.innerHTML = items.map((p,i)=>{
-        const statusTag = p.answered ? `<span class="tag good">Respondido</span>` : `<span class="tag warn">Pendente</span>`;
-        return `
-          <div class="item">
-            <div style="display:flex;gap:10px;align-items:flex-start;justify-content:space-between;">
-              <div style="min-width:0;">
-                <div style="font-size:16px;font-weight:800;margin:0 0 6px;">${escapeHtml(p.title || "Pedido")}</div>
-                <div style="color:var(--muted);line-height:1.35;">${escapeHtml(p.text || "")}</div>
-              </div>
-              ${statusTag}
-            </div>
-            <div class="meta">
-              <div>${fmtDate(p.createdAt)}</div>
-              <div class="row">
-                <button class="btn small ${p.answered ? "" : "good"}" data-act="toggle" data-i="${i}">${p.answered ? "Desmarcar" : "Marcar respondido"}</button>
-                <button class="btn small" data-act="copy" data-i="${i}">Copiar</button>
-                <button class="btn small" data-act="del" data-i="${i}">Excluir</button>
-              </div>
-            </div>
-          </div>
-        `;
-      }).join("");
-
-      // bind
-      list.querySelectorAll("button").forEach(b=>{
-        const i = +b.dataset.i;
-        const act = b.dataset.act;
-        b.addEventListener('click', ()=>{
-          let items = getPrayers();
-          if(act === "toggle"){
-            items[i].answered = !items[i].answered;
-            setPrayers(items);
-            renderPrayers();
-            toast(items[i].answered ? "Marcado como respondido!" : "Voltou para pendente.");
-          }
-          if(act === "copy"){
-            const p = items[i];
-            copyText(`🙏 Pedido de oração\n${p.title}\n\n${p.text}`);
-          }
-          if(act === "del"){
-            items.splice(i,1);
-            setPrayers(items);
-            renderPrayers();
-            toast("Excluído.");
-          }
-        });
-      });
-    }
-
-    $("#btnAddPrayer").addEventListener('click', ()=>{
-      const title = $("#prayTitle").value.trim();
-      const text = $("#prayText").value.trim();
-      if(!title && !text){
-        toast("Escreva um título ou pedido.");
-        return;
-      }
-      const items = getPrayers();
-      items.unshift({ title, text, answered:false, createdAt: nowISO() });
-      setPrayers(items);
-      $("#prayTitle").value="";
-      $("#prayText").value="";
-      renderPrayers();
-      toast("Pedido salvo.");
-    });
-
-    $("#btnClearPrayerForm").addEventListener('click', ()=>{
-      $("#prayTitle").value="";
-      $("#prayText").value="";
-      toast("Limpo.");
-    });
-
-    renderPrayers();
-
-    // ===== MÚSICA =====
-    function getMusic(){ return store.get("music.items", []); }
-    function setMusic(items){ store.set("music.items", items); }
-
-    function renderMusic(){
-      const list = $("#musicList");
-      const items = getMusic();
-      if(items.length === 0){
-        list.innerHTML = `<div class="hint">Sua playlist está vazia. Adicione um link mp3 acima 🎵</div>`;
-        return;
-      }
-      list.innerHTML = items.map((m,i)=>`
-        <div class="item">
-          <div style="display:flex;gap:10px;align-items:flex-start;justify-content:space-between;">
-            <div style="min-width:0;">
-              <div style="font-size:16px;font-weight:800;margin:0 0 6px;">${escapeHtml(m.name || "Música")}</div>
-              <div style="color:var(--muted);font-size:13px;word-break:break-all;">${escapeHtml(m.url)}</div>
-            </div>
-            <span class="tag">Playlist</span>
-          </div>
-          <div class="meta">
-            <div>${fmtDate(m.createdAt)}</div>
-            <div class="row">
-              <button class="btn small good" data-act="play" data-i="${i}">Tocar</button>
-              <button class="btn small" data-act="copy" data-i="${i}">Copiar link</button>
-              <button class="btn small" data-act="del" data-i="${i}">Excluir</button>
-            </div>
-          </div>
-        </div>
-      `).join("");
-
-      list.querySelectorAll("button").forEach(b=>{
-        const i = +b.dataset.i;
-        const act = b.dataset.act;
-        b.addEventListener('click', ()=>{
-          let items = getMusic();
-          if(act==="play"){
-            $("#player").src = items[i].url;
-            $("#player").play().catch(()=>{});
-            toast("Tocando…");
-          }
-          if(act==="copy"){
-            copyText(items[i].url);
-          }
-          if(act==="del"){
-            items.splice(i,1);
-            setMusic(items);
-            renderMusic();
-            toast("Removido.");
-          }
-        });
-      });
-    }
-
-    $("#btnAddMusic").addEventListener('click', ()=>{
-      const name = $("#musicName").value.trim();
-      const url = $("#musicUrl").value.trim();
-      if(!url){
-        toast("Cole um link mp3.");
-        return;
-      }
-      const items = getMusic();
-      items.unshift({ name: name || "Música", url, createdAt: nowISO() });
-      setMusic(items);
-      $("#musicName").value="";
-      $("#musicUrl").value="";
-      renderMusic();
-      toast("Adicionado.");
-    });
-
-    $("#btnClearMusic").addEventListener('click', ()=>{
-      $("#musicName").value="";
-      $("#musicUrl").value="";
-      toast("Limpo.");
-    });
-
-    renderMusic();
-
-    // ===== IMAGENS (GALERIA) =====
-    // 👉 Coloque AQUI todos os nomes das imagens que você subir na pasta /imagens
-    const galleryItems = [
-      {
-        file: "C5782EF9-9488-4CB9-8285-C27D142A8118.png",
-        title: "Arte 01"
-      }
-      // Quando você subir mais, adicione assim:
-      // { file: "NOME-DA-IMAGEM.png", title: "Arte 02" },
+      // 👉 ADICIONE AS OUTRAS ASSIM (exemplo):
+      // { src: "./imagens/OUTRO_ARQUIVO.png", title: "Imagem 2" },
+      // { src: "./imagens/OUTRO_ARQUIVO2.png", title: "Imagem 3" },
     ];
 
     function renderGallery(){
-      const g = $("#gallery");
-      if(galleryItems.length === 0){
-        g.innerHTML = `<div class="hint">Sem imagens ainda.</div>`;
-        return;
-      }
-      g.innerHTML = galleryItems.map((it, idx)=>`
-        <div class="gimg" data-i="${idx}">
-          <img src="imagens/${it.file}" alt="${escapeHtml(it.title)}" loading="lazy">
-          <div class="gcap">${escapeHtml(it.title)}<br><span style="opacity:.7;">imagens/${escapeHtml(it.file)}</span></div>
-        </div>
-      `).join("");
-
-      g.querySelectorAll(".gimg").forEach(el=>{
-        const i = +el.dataset.i;
-        el.addEventListener('click', ()=>{
-          const it = galleryItems[i];
-          openModal(`imagens/${it.file}`, `${it.title} — imagens/${it.file}`);
-        });
+      const grid = $("#galleryGrid");
+      grid.innerHTML = "";
+      galleryImages.forEach((img, idx) => {
+        const tile = document.createElement("div");
+        tile.className = "imgTile";
+        tile.innerHTML = `
+          <img src="${img.src}" alt="${img.title}">
+          <small>${img.title}</small>
+        `;
+        tile.addEventListener("click", ()=> openModal(img.title, img.src));
+        grid.appendChild(tile);
       });
     }
-    renderGallery();
 
-    // ===== Modal =====
-    const modal = $("#modal");
-    function openModal(src, cap){
+    // ========= MODAL =========
+    function openModal(title, src){
+      $("#modalTitle").textContent = title;
       $("#modalImg").src = src;
-      $("#modalCap").textContent = cap;
-      modal.classList.add("open");
+      $("#imgModal").classList.add("open");
     }
     function closeModal(){
-      modal.classList.remove("open");
+      $("#imgModal").classList.remove("open");
       $("#modalImg").src = "";
     }
-    $("#btnCloseModal").addEventListener('click', closeModal);
-    modal.addEventListener('click', (e)=>{
-      if(e.target === modal) closeModal();
-    });
-    $("#btnCopyImgLink").addEventListener('click', ()=>{
-      copyText($("#modalImg").src);
+    $("#modalClose").addEventListener("click", closeModal);
+    $("#imgModal").addEventListener("click", (e)=>{ if(e.target.id==="imgModal") closeModal(); });
+
+    // ========= AÇÕES HOJE =========
+    $("#btnTrocar").addEventListener("click", ()=>{
+      const i = (store.get("verseIndex", 0) + 1) % verses.length;
+      renderVerse(i);
     });
 
-    // ===== NOTAS =====
-    function getNotes(){ return store.get("notes.items", []); }
-    function setNotes(items){ store.set("notes.items", items); }
+    $("#btnCopiar").addEventListener("click", async ()=>{
+      const text = `${$("#verseText").textContent}\n${$("#verseRef").textContent}\n\n${$("#devoTitle").textContent}\n${$("#devoText").textContent}`;
+      try{
+        await navigator.clipboard.writeText(text);
+        alert("Copiado!");
+      }catch{
+        alert("Não consegui copiar. Tente selecionar e copiar manualmente.");
+      }
+    });
 
-    function renderNotes(){
-      const list = $("#notesList");
-      const items = getNotes();
-      if(items.length === 0){
-        list.innerHTML = `<div class="hint">Sem notas ainda. Crie a primeira acima 📝</div>`;
+    $("#btnCompartilhar").addEventListener("click", async ()=>{
+      const text = `${$("#verseText").textContent}\n${$("#verseRef").textContent}\n\n${$("#devoTitle").textContent}\n${$("#devoText").textContent}`;
+      if(navigator.share){
+        try{ await navigator.share({ title:"App Cristão", text }); }
+        catch{}
+      } else {
+        alert("Compartilhar não disponível aqui. Use Copiar.");
+      }
+    });
+
+    // ========= MÚSICA =========
+    function loadAudio(){
+      const url = store.get("audioUrl", "");
+      $("#audioUrl").value = url;
+      $("#audioPlayer").src = url || "";
+    }
+    $("#btnSalvarAudio").addEventListener("click", ()=>{
+      const url = $("#audioUrl").value.trim();
+      store.set("audioUrl", url);
+      loadAudio();
+      alert("Salvo!");
+    });
+    $("#btnLimparAudio").addEventListener("click", ()=>{
+      store.set("audioUrl", "");
+      loadAudio();
+      alert("Limpo!");
+    });
+
+    // ========= PEDIDOS DE ORAÇÃO =========
+    function renderPrayers(){
+      const list = $("#prayerList");
+      const prayers = store.get("prayers", []);
+      list.innerHTML = "";
+      if(prayers.length === 0){
+        const empty = document.createElement("div");
+        empty.className = "hint";
+        empty.textContent = "Nenhum pedido ainda. Adicione acima.";
+        list.appendChild(empty);
         return;
       }
-      list.innerHTML = items.map((n,i)=>`
-        <div class="item">
-          <div style="display:flex;gap:10px;align-items:flex-start;justify-content:space-between;">
-            <div style="min-width:0;">
-              <div style="font-size:16px;font-weight:900;margin:0 0 6px;">${escapeHtml(n.title || "Nota")}</div>
-              <div style="color:var(--muted);white-space:pre-wrap;line-height:1.35;">${escapeHtml(n.text || "")}</div>
-            </div>
-            <span class="tag">Nota</span>
-          </div>
-          <div class="meta">
-            <div>${fmtDate(n.createdAt)}</div>
-            <div class="row">
-              <button class="btn small" data-act="copy" data-i="${i}">Copiar</button>
-              <button class="btn small" data-act="del" data-i="${i}">Excluir</button>
-            </div>
-          </div>
-        </div>
-      `).join("");
 
-      list.querySelectorAll("button").forEach(b=>{
-        const i = +b.dataset.i;
-        const act = b.dataset.act;
-        b.addEventListener('click', ()=>{
-          let items = getNotes();
-          if(act==="copy"){
-            const n = items[i];
-            copyText(`📝 ${n.title}\n\n${n.text}`);
-          }
-          if(act==="del"){
-            items.splice(i,1);
-            setNotes(items);
-            renderNotes();
-            toast("Excluído.");
-          }
+      prayers.forEach((p, idx)=>{
+        const el = document.createElement("div");
+        el.className = "item";
+        el.innerHTML = `
+          <div class="itemTop">
+            <div>
+              <b>${escapeHtml(p.title || "Pedido")}</b>
+              <small>${new Date(p.ts).toLocaleString()}</small>
+            </div>
+            <button class="x" title="Remover">✕</button>
+          </div>
+          <div style="margin-top:8px; color: var(--muted); line-height:1.35;">
+            ${escapeHtml(p.text || "").replace(/\n/g,"<br>")}
+          </div>
+        `;
+        el.querySelector(".x").addEventListener("click", ()=>{
+          const arr = store.get("prayers", []);
+          arr.splice(idx, 1);
+          store.set("prayers", arr);
+          renderPrayers();
         });
+        list.appendChild(el);
       });
     }
-    renderNotes();
 
-    $("#btnSaveNote").addEventListener('click', ()=>{
-      const title = $("#noteTitle").value.trim();
-      const text  = $("#noteText").value.trim();
+    $("#btnAddPrayer").addEventListener("click", ()=>{
+      const title = $("#prayTitle").value.trim();
+      const text = $("#prayText").value.trim();
       if(!title && !text){
-        toast("Escreva algo.");
+        alert("Escreva um pedido.");
         return;
       }
-      const items = getNotes();
-      items.unshift({ title: title || "Nota", text, createdAt: nowISO() });
-      setNotes(items);
-      $("#noteTitle").value="";
-      $("#noteText").value="";
-      renderNotes();
-      toast("Nota salva.");
-    });
-    $("#btnClearNote").addEventListener('click', ()=>{
-      $("#noteTitle").value="";
-      $("#noteText").value="";
-      toast("Limpo.");
-    });
-
-    // ===== CONFIG =====
-    $("#btnResetAll").addEventListener('click', ()=>{
-      if(!confirm("Tem certeza que quer apagar todos os dados do app?")) return;
-      ["prayers.items","notes.items","music.items","plano.doneDays","hoje.verseIndex","ui.lastTab","pray.verseIndex"].forEach(k=>store.del(k));
-      verseIndex = 0;
-      prayVerseIndex = 0;
-      renderHoje();
-      renderPlano();
-      renderPrayVerse();
+      const prayers = store.get("prayers", []);
+      prayers.unshift({ title, text, ts: Date.now() });
+      store.set("prayers", prayers);
+      $("#prayTitle").value = "";
+      $("#prayText").value = "";
       renderPrayers();
-      renderNotes();
-      renderMusic();
-      showTab("hoje");
-      toast("Tudo apagado.");
     });
 
-    $("#btnExport").addEventListener('click', ()=>{
-      const dump = {
-        prayers: getPrayers(),
-        notes: getNotes(),
-        music: getMusic(),
-        planoDone: store.get("plano.doneDays",0),
-        verseIndex: store.get("hoje.verseIndex",0),
-        exportedAt: nowISO()
-      };
-      copyText(JSON.stringify(dump, null, 2));
+    $("#btnClearPrayers").addEventListener("click", ()=>{
+      if(confirm("Apagar todos os pedidos?")){
+        store.set("prayers", []);
+        renderPrayers();
+      }
     });
 
-    // ===== Escape HTML =====
+    // ========= NOTAS =========
+    function loadNotes(){
+      $("#notesBox").value = store.get("notes", "");
+    }
+    $("#btnSaveNotes").addEventListener("click", ()=>{
+      store.set("notes", $("#notesBox").value);
+      alert("Notas salvas!");
+    });
+    $("#btnClearNotes").addEventListener("click", ()=>{
+      if(confirm("Limpar notas?")){
+        store.set("notes", "");
+        loadNotes();
+      }
+    });
+
+    // ========= CONFIG =========
+    function loadStatus(){
+      $("#statusInput").value = store.get("statusText", "Dia em dia");
+      setOnlineUI();
+    }
+    $("#btnSaveStatus").addEventListener("click", ()=>{
+      store.set("statusText", $("#statusInput").value.trim() || "Dia em dia");
+      setOnlineUI();
+      alert("Salvo!");
+    });
+    $("#btnGoHome").addEventListener("click", ()=> go("hoje"));
+
+    // ========= NAV =========
+    function go(name){
+      $$(".screen").forEach(s => s.classList.remove("active"));
+      $(`#screen-${name}`).classList.add("active");
+
+      $$(".tab").forEach(t => t.classList.remove("active"));
+      $(`.tab[data-go="${name}"]`).classList.add("active");
+
+      store.set("screen", name);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    $$(".tab").forEach(t => t.addEventListener("click", ()=> go(t.dataset.go)));
+
+    // ========= segurança p/ HTML =========
     function escapeHtml(str){
       return String(str)
         .replaceAll("&","&amp;")
@@ -1150,13 +777,20 @@
         .replaceAll("'","&#039;");
     }
 
-    // ===== PWA SW (opcional) =====
-    // Se você tiver sw.js na raiz, isso registra.
-    if('serviceWorker' in navigator){
-      window.addEventListener('load', ()=>{
-        navigator.serviceWorker.register('./sw.js').catch(()=>{});
-      });
-    }
+    // ========= INIT =========
+    (function init(){
+      const savedIndex = store.get("verseIndex", 0);
+      renderVerse(savedIndex);
+
+      renderGallery();
+      loadAudio();
+      renderPrayers();
+      loadNotes();
+      loadStatus();
+
+      const last = store.get("screen", "hoje");
+      go(last);
+    })();
   </script>
 </body>
 </html>
