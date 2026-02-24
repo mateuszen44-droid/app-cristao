@@ -1,0 +1,9 @@
+{
+  "name": "App Cristão",
+  "short_name": "App Cristão",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#070B14",
+  "theme_color": "#0B1220",
+  "icons": []
+}
