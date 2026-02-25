@@ -2,795 +2,675 @@
 <html lang="pt-br">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>App Cristão</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0b1220" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Devocional • 30 Dias</title>
 
-  <!-- PWA -->
-  <link rel="manifest" href="manifest.webmanifest">
-  <meta name="theme-color" content="#0B1220">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="App Cristão">
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icon-192.png" sizes="192x192" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
 
   <style>
     :root{
-      --bg: #0B1220;
-      --card: rgba(12, 20, 38, .72);
-      --card2: rgba(12, 20, 38, .55);
+      --bg:#0b1220;
+      --panel: rgba(255,255,255,.06);
+      --panel2: rgba(255,255,255,.09);
       --line: rgba(255,255,255,.10);
-      --text: #EAF0FF;
-      --muted: #A7B4D6;
-      --btn: rgba(255,255,255,.08);
-      --btn2: rgba(255,255,255,.14);
-      --good: #45E2A8;
-      --warn: #FFD166;
-      --shadow: 0 14px 35px rgba(0,0,0,.35);
-      --radius: 20px;
-      --radius2: 16px;
-      --safe-top: env(safe-area-inset-top);
-      --safe-bot: env(safe-area-inset-bottom);
-      --safe-left: env(safe-area-inset-left);
-      --safe-right: env(safe-area-inset-right);
+      --text:#eaf0ff;
+      --muted:#a7b4d6;
+      --ok:#31d07c;
+      --bad:#ff5d7a;
+      --accent:#4c8dff;
+      --gold:#f7d27a;
+      --shadow: 0 18px 60px rgba(0,0,0,.40);
+      --r:18px;
+      --tap:52px;
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
     }
-
-    /* ===== FUNDO COM A SUA IMAGEM (APP TODO) ===== */
-    html, body { height: 100%; }
+    *{box-sizing:border-box}
     body{
-      margin: 0;
-      min-height: 100vh;
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Arial, sans-serif;
-
-      background: url("./imagens/C5782EF9-9488-4CB9-8285-C27D142A8118.png")
-        center center / cover no-repeat fixed;
-      background-color: #000;
-      overflow-x: hidden;
+      margin:0; font-family:var(--font); color:var(--text);
+      background:
+        radial-gradient(900px 450px at 10% 0%, rgba(76,141,255,.22), transparent 60%),
+        radial-gradient(900px 450px at 90% 10%, rgba(247,210,122,.16), transparent 60%),
+        radial-gradient(900px 450px at 60% 100%, rgba(49,208,124,.14), transparent 60%),
+        var(--bg);
+      padding-bottom: 94px;
     }
-    /* camada escura p/ texto ficar legível */
-    body::before{
-      content:"";
-      position: fixed;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(2,6,16,.50), rgba(2,6,16,.88));
-      pointer-events: none;
-      z-index: 0;
+    .wrap{max-width:980px;margin:0 auto;padding:16px 14px 0}
+    header{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:10px 4px 14px; position:sticky;top:0;z-index:20;
+      backdrop-filter: blur(14px);
+      background: linear-gradient(180deg, rgba(11,18,32,.86), rgba(11,18,32,.15));
+      border-bottom: 1px solid rgba(255,255,255,.06);
     }
-
-    /* app por cima do fundo */
-    #app{
-      position: relative;
-      z-index: 1;
-      min-height: 100vh;
-      padding: calc(14px + var(--safe-top)) calc(14px + var(--safe-right)) calc(90px + var(--safe-bot)) calc(14px + var(--safe-left));
-      box-sizing: border-box;
-    }
-
-    .topbar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 12px;
-      margin-bottom: 14px;
-    }
-    .brand{
-      display:flex;
-      align-items:center;
-      gap: 10px;
-    }
+    .brand{display:flex;align-items:center;gap:12px;min-width:0}
     .logo{
-      width: 44px;
-      height: 44px;
-      border-radius: 14px;
-      background: radial-gradient(circle at 30% 30%, #7C3AED, #06B6D4);
-      display:grid;
-      place-items:center;
+      width:44px;height:44px;border-radius:14px;
+      background: linear-gradient(135deg, rgba(76,141,255,.95), rgba(247,210,122,.85));
       box-shadow: var(--shadow);
-      flex: 0 0 auto;
+      display:grid;place-items:center;
+      font-weight:1000;color:#08111f;
+      flex:0 0 auto;
+      position:relative;overflow:hidden;
     }
-    .logo span{
-      font-size: 22px;
-      font-weight: 800;
-      line-height: 1;
+    .logo:after{
+      content:"";position:absolute;inset:-60%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.35), transparent 42%);
+      transform: rotate(18deg);
     }
-    .title{
-      display:flex;
-      flex-direction:column;
-      line-height:1.1;
-    }
-    .title b{ font-size: 18px; }
-    .title small{ color: var(--muted); font-size: 12px; margin-top: 2px; }
-
+    h1{margin:0;font-size:16px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .sub{margin-top:4px;color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .pill{
-      padding: 10px 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.08);
-      border: 1px solid rgba(255,255,255,.10);
-      display:flex;
-      align-items:center;
-      gap: 8px;
-      color: var(--text);
-      box-shadow: var(--shadow);
-      user-select:none;
+      display:inline-flex;align-items:center;gap:8px;
+      padding:10px 12px;border-radius:999px;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10);
+      font-size:12px;color:var(--muted);
+      user-select:none;white-space:nowrap;
     }
-    .dot{
-      width: 10px;
-      height: 10px;
-      border-radius: 999px;
-      background: var(--good);
-      box-shadow: 0 0 0 4px rgba(69,226,168,.15);
-    }
+    .dot{width:10px;height:10px;border-radius:99px;background:var(--ok);box-shadow:0 0 0 6px rgba(49,208,124,.10)}
+    .dot.off{background:#ffd166;box-shadow:0 0 0 6px rgba(255,209,102,.10)}
 
+    .grid{display:grid;grid-template-columns:1.2fr .8fr;gap:14px;align-items:start}
+    @media (max-width:860px){.grid{grid-template-columns:1fr}}
     .card{
-      background: var(--card);
-      border: 1px solid rgba(255,255,255,.10);
-      border-radius: var(--radius);
+      background: var(--panel);
+      border:1px solid var(--line);
+      border-radius: var(--r);
       box-shadow: var(--shadow);
-      padding: 16px;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      margin-bottom: 14px;
+      overflow:hidden;
+    }
+    .card .hd{
+      padding:14px 14px 10px;
+      border-bottom:1px solid rgba(255,255,255,.06);
+      display:flex;align-items:flex-start;justify-content:space-between;gap:10px;
+    }
+    .card .hd h2{margin:0;font-size:14px;letter-spacing:.2px}
+    .card .hd small{display:block;margin-top:4px;color:var(--muted);font-size:12px}
+    .card .bd{padding:14px}
+
+    .badge{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:8px 10px;border-radius:999px;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10);
+      color:var(--muted);font-size:12px;
+      white-space:nowrap;
     }
 
-    .sectionTitle{
-      color: rgba(234,240,255,.72);
-      font-weight: 800;
-      letter-spacing: .08em;
-      font-size: 12px;
-      margin-bottom: 10px;
-    }
-
-    .verse{
-      font-size: 28px;
-      line-height: 1.15;
-      letter-spacing: -0.02em;
-      margin: 0 0 10px 0;
-    }
-    .ref{
-      color: var(--muted);
-      font-size: 16px;
-      margin-bottom: 14px;
-    }
-
-    .row{
-      display:flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
     .btn{
-      border: 1px solid rgba(255,255,255,.10);
-      background: var(--btn);
-      color: var(--text);
-      padding: 12px 14px;
-      border-radius: 14px;
-      font-weight: 700;
-      cursor: pointer;
+      height: var(--tap);
+      padding:0 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color:var(--text);
+      font-weight:900;
+      cursor:pointer;
       user-select:none;
+      -webkit-tap-highlight-color: transparent;
     }
-    .btn:hover{ background: var(--btn2); }
-    .btn.primary{
-      background: rgba(69,226,168,.15);
-      border-color: rgba(69,226,168,.30);
-    }
+    .btn:active{transform:translateY(1px)}
+    .btn.primary{border-color: rgba(76,141,255,.35); background: rgba(76,141,255,.16)}
+    .btn.ok{border-color: rgba(49,208,124,.35); background: rgba(49,208,124,.16)}
+    .btn.danger{border-color: rgba(255,93,122,.30); background: rgba(255,93,122,.12)}
+    .btn.small{height:42px;border-radius:12px;font-size:13px;padding:0 12px;flex:0}
+    .btn.wide{width:100%}
 
-    .subcard{
-      margin-top: 12px;
-      padding: 14px;
-      border-radius: var(--radius2);
-      background: var(--card2);
-      border: 1px solid rgba(255,255,255,.10);
-    }
-    .subcard h3{
-      margin: 0 0 6px 0;
-      font-size: 20px;
-    }
-    .subcard p{
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.35;
-    }
+    .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    @media (max-width:520px){.two{grid-template-columns:1fr}}
 
-    /* GALERIA */
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin-top: 10px;
-    }
-    .imgTile{
-      border-radius: 16px;
-      overflow:hidden;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.25);
-      box-shadow: var(--shadow);
-      cursor:pointer;
-    }
-    .imgTile img{
-      width:100%;
-      height: 150px;
-      object-fit: cover;
-      display:block;
-      transform: scale(1.02);
-    }
-    .imgTile small{
-      display:block;
-      padding: 8px 10px;
-      color: var(--muted);
-      font-size: 12px;
-      border-top: 1px solid rgba(255,255,255,.08);
-    }
-
-    /* modal imagem */
-    .modal{
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      background: rgba(0,0,0,.75);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding: 18px;
-    }
-    .modal.open{ display:flex; }
-    .modalBox{
-      width: min(980px, 100%);
-      max-height: 92vh;
-      border-radius: 18px;
-      overflow:hidden;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.35);
-      box-shadow: 0 25px 80px rgba(0,0,0,.55);
-    }
-    .modalTop{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap: 10px;
-      padding: 10px 12px;
-      background: rgba(12, 20, 38, .65);
-      border-bottom: 1px solid rgba(255,255,255,.10);
-    }
-    .modalTop b{ font-size: 14px; color: var(--text); }
-    .modalTop button{
-      padding: 8px 10px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.08);
-      color: var(--text);
-      cursor:pointer;
-      font-weight: 800;
-    }
-    .modalImg{
-      width:100%;
-      max-height: calc(92vh - 48px);
-      object-fit: contain;
-      display:block;
-      background: rgba(0,0,0,.35);
-    }
-
-    /* inputs */
-    .field{
-      display:flex;
-      flex-direction:column;
-      gap: 6px;
-      margin-top: 10px;
-    }
-    label{
-      color: rgba(234,240,255,.8);
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: .06em;
-      text-transform: uppercase;
-    }
-    input, textarea{
-      width: 100%;
-      box-sizing: border-box;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.18);
-      color: var(--text);
-      padding: 12px 12px;
-      outline: none;
-      font-size: 15px;
-    }
-    textarea{ min-height: 110px; resize: vertical; }
-    .hint{ color: var(--muted); font-size: 12px; margin-top: 8px; }
-
-    /* lista */
-    .list{
-      margin-top: 10px;
-      display:flex;
-      flex-direction:column;
-      gap: 10px;
-    }
+    .list{display:flex;flex-direction:column;gap:10px}
     .item{
-      padding: 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:16px;
+      padding:12px;
+      display:flex;justify-content:space-between;gap:10px;align-items:flex-start;
     }
-    .itemTop{
-      display:flex;
-      justify-content:space-between;
-      gap: 10px;
-      align-items:flex-start;
+    .item .left{min-width:0}
+    .item .title{margin:0;font-size:14px;font-weight:1000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .item .meta{margin-top:6px;color:var(--muted);font-size:12px;display:flex;gap:10px;flex-wrap:wrap}
+    .tag{
+      display:inline-flex;align-items:center;gap:6px;
+      padding:4px 8px;border-radius:999px;
+      background: rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.10);
+      color:var(--muted);font-size:12px;white-space:nowrap;
     }
-    .item b{ display:block; margin-bottom: 4px; }
-    .item small{ color: var(--muted); }
-    .item .x{
-      flex: 0 0 auto;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      color: var(--text);
-      border-radius: 12px;
-      padding: 8px 10px;
-      cursor:pointer;
-      font-weight: 900;
+    .empty{
+      padding:14px;border-radius:16px;
+      background: rgba(0,0,0,.14);
+      border:1px dashed rgba(255,255,255,.16);
+      color:var(--muted);text-align:center;
+    }
+    .divider{height:1px;background:rgba(255,255,255,.08);margin:12px 0}
+    .small{font-size:12px;color:rgba(234,240,255,.75);line-height:1.45}
+
+    .cal{
+      display:grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap:10px;
+    }
+    @media (max-width:520px){.cal{grid-template-columns: repeat(5, 1fr);}}
+    .day{
+      height:50px;border-radius:16px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.14);
+      display:flex;align-items:center;justify-content:center;
+      font-weight:1000; cursor:pointer; user-select:none;
+      position:relative;
+    }
+    .day.active{border-color: rgba(76,141,255,.45); background: rgba(76,141,255,.16)}
+    .day.done{
+      border-color: rgba(49,208,124,.45);
+      background: rgba(49,208,124,.16);
+    }
+    .day.done::after{
+      content:"✓";
+      position:absolute; top:6px; right:8px;
+      font-size:12px; color: var(--ok);
+      background: rgba(0,0,0,.22);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:999px;
+      padding:2px 6px;
     }
 
-    /* bottom nav */
-    .bottomNav{
-      position: fixed;
-      left: 0; right: 0;
-      bottom: 0;
-      padding: 10px calc(12px + var(--safe-right)) calc(10px + var(--safe-bot)) calc(12px + var(--safe-left));
-      z-index: 50;
-      background: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.55));
-      pointer-events: none;
+    .heroVerse{
+      padding:14px;
+      border-radius:18px;
+      background: linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.10);
     }
+    .heroVerse .ref{color:var(--gold);font-weight:1000;margin-bottom:8px}
+    .heroVerse .txt{font-size:15px;line-height:1.55}
+    .heroVerse .pray{margin-top:10px;color:rgba(234,240,255,.78);font-size:12px;line-height:1.55}
+
     .tabs{
-      pointer-events: auto;
-      display:flex;
-      gap: 10px;
-      justify-content:space-between;
-      background: rgba(12, 20, 38, .70);
-      border: 1px solid rgba(255,255,255,.12);
-      border-radius: 22px;
-      padding: 10px;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      box-shadow: var(--shadow);
+      position:fixed;left:0;right:0;bottom:0;z-index:50;
+      background: rgba(10,16,30,.80);
+      backdrop-filter: blur(14px);
+      border-top:1px solid rgba(255,255,255,.10);
+      padding:10px 10px calc(12px + env(safe-area-inset-bottom));
+    }
+    .tabs .bar{
+      max-width:980px;margin:0 auto;
+      display:grid;grid-template-columns:repeat(4,1fr);gap:8px;
     }
     .tab{
-      flex: 1 1 0;
-      border-radius: 16px;
-      padding: 10px 8px;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap: 6px;
-      color: rgba(234,240,255,.70);
-      font-weight: 800;
-      font-size: 12px;
-      cursor:pointer;
-      user-select:none;
+      height:56px;border-radius:18px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+      color:var(--muted);font-weight:1000;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+      cursor:pointer;user-select:none;font-size:11px;
+      -webkit-tap-highlight-color: transparent;
     }
-    .tab span{ font-size: 18px; }
-    .tab.active{
-      background: rgba(255,255,255,.08);
-      color: var(--text);
-      border: 1px solid rgba(255,255,255,.12);
-    }
+    .tab.active{background: rgba(76,141,255,.14);border-color: rgba(76,141,255,.35);color: var(--text)}
+    .tab .ico{font-size:18px;line-height:1}
 
-    /* telas */
-    .screen{ display:none; }
-    .screen.active{ display:block; }
+    .view{display:none}
+    .view.active{display:block}
 
-    @media (min-width: 760px){
-      .grid{ grid-template-columns: repeat(3, 1fr); }
-      .imgTile img{ height: 180px; }
-      .verse{ font-size: 32px; }
+    .toast{
+      position:fixed;left:50%;transform:translateX(-50%);
+      bottom: 96px;z-index:80;
+      background: rgba(0,0,0,.55);
+      border:1px solid rgba(255,255,255,.12);
+      color:var(--text);
+      padding:10px 12px;border-radius:999px;
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow);
+      max-width: calc(100% - 24px);
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+      opacity:0;pointer-events:none;
+      transition: opacity .2s ease, transform .2s ease;
     }
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(-6px)}
   </style>
 </head>
 
 <body>
-  <div id="app">
-    <div class="topbar">
+  <div class="wrap">
+    <header>
       <div class="brand">
-        <div class="logo"><span>✝</span></div>
-        <div class="title">
-          <b>App Cristão</b>
-          <small>Seu devocional pessoal • offline</small>
+        <div class="logo">✝</div>
+        <div>
+          <h1 id="appName">Devocional • 30 Dias</h1>
+          <div class="sub">Calendário • Versículos • Orações • Temas</div>
         </div>
       </div>
-
-      <div class="pill" id="statusPill">
-        <span class="dot" id="statusDot"></span>
-        <span id="statusText">Dia em dia</span>
+      <div class="pill">
+        <span class="dot" id="netDot"></span>
+        <span id="netTxt">offline</span>
       </div>
-    </div>
+    </header>
 
-    <!-- ===== HOJE ===== -->
-    <section class="screen active" id="screen-hoje">
-      <div class="card">
-        <div class="sectionTitle">HOJE</div>
+    <!-- DEVOCIONAL -->
+    <section class="view active" id="view-devocional">
+      <div class="grid">
+        <div class="card">
+          <div class="hd">
+            <div>
+              <h2>Devocional do dia</h2>
+              <small>Selecione um dia no calendário</small>
+            </div>
+            <div class="badge" id="progressBadge">0/30 concluídos</div>
+          </div>
 
-        <p class="verse" id="verseText">“Deixo-vos a paz, a minha paz vos dou; não vo-la dou como o mundo a dá.”</p>
-        <div class="ref" id="verseRef">João 14:27</div>
+          <div class="bd">
+            <div class="heroVerse" id="heroVerse"></div>
 
-        <div class="row">
-          <button class="btn primary" id="btnTrocar">Trocar</button>
-          <button class="btn" id="btnCompartilhar">Compartilhar</button>
-          <button class="btn" id="btnCopiar">Copiar</button>
+            <div class="divider"></div>
+
+            <div class="two">
+              <button class="btn ok" id="btnDone">Marcar como feito ✅</button>
+              <button class="btn" id="btnCopy">Copiar versículo</button>
+            </div>
+
+            <div style="height:10px"></div>
+
+            <button class="btn primary wide" id="btnReset">Reiniciar 30 dias</button>
+
+            <div class="divider"></div>
+            <div class="small">
+              💡 Dica: leia o versículo, faça a oração curta e escreva 1 frase de aplicação no seu caderno.
+            </div>
+          </div>
         </div>
 
-        <div class="subcard">
-          <h3 id="devoTitle">Devocional: Coragem</h3>
-          <p id="devoText">Coragem não é ausência de medo; é fidelidade apesar do medo. Dê o próximo passo com Deus.</p>
-        </div>
-
-        <div class="hint">📌 Dica: adicione à tela inicial no Safari para ficar como app.</div>
-      </div>
-
-      <div class="card">
-        <div class="sectionTitle">GALERIA</div>
-        <div class="hint">As imagens abaixo são lidas da sua lista. (Você pode adicionar mais no código.)</div>
-        <div class="grid" id="galleryGrid"></div>
-      </div>
-
-      <div class="card">
-        <div class="sectionTitle">MÚSICA</div>
-        <div class="hint">Cole um link de MP3 (ou hospede um mp3 no GitHub e use o link direto).</div>
-
-        <div class="field">
-          <label>Link do áudio (mp3)</label>
-          <input id="audioUrl" placeholder="https://.../musica.mp3" />
-        </div>
-
-        <div class="row" style="margin-top:10px;">
-          <button class="btn primary" id="btnSalvarAudio">Salvar</button>
-          <button class="btn" id="btnLimparAudio">Limpar</button>
-        </div>
-
-        <div class="subcard" style="margin-top:12px;">
-          <audio id="audioPlayer" controls style="width:100%;"></audio>
-          <div class="hint" style="margin-top:10px;">Se o áudio não tocar, o link pode não ser “direto” para mp3.</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== ORAÇÃO ===== -->
-    <section class="screen" id="screen-oracao">
-      <div class="card">
-        <div class="sectionTitle">PEDIDOS DE ORAÇÃO</div>
-
-        <div class="field">
-          <label>Nome / Motivo</label>
-          <input id="prayTitle" placeholder="Ex: Família, Saúde, Trabalho..." />
-        </div>
-
-        <div class="field">
-          <label>Detalhes</label>
-          <textarea id="prayText" placeholder="Escreva aqui seu pedido..."></textarea>
-        </div>
-
-        <div class="row" style="margin-top:10px;">
-          <button class="btn primary" id="btnAddPrayer">Adicionar</button>
-          <button class="btn" id="btnClearPrayers">Apagar todos</button>
-        </div>
-
-        <div class="list" id="prayerList"></div>
-      </div>
-    </section>
-
-    <!-- ===== NOTAS ===== -->
-    <section class="screen" id="screen-notas">
-      <div class="card">
-        <div class="sectionTitle">NOTAS</div>
-        <div class="hint">Suas anotações ficam salvas no aparelho.</div>
-
-        <div class="field">
-          <label>Minha nota</label>
-          <textarea id="notesBox" placeholder="Escreva suas anotações..."></textarea>
-        </div>
-
-        <div class="row" style="margin-top:10px;">
-          <button class="btn primary" id="btnSaveNotes">Salvar</button>
-          <button class="btn" id="btnClearNotes">Limpar</button>
+        <div class="card">
+          <div class="hd">
+            <div>
+              <h2>Calendário 30 dias</h2>
+              <small>Clique em um dia para abrir</small>
+            </div>
+          </div>
+          <div class="bd">
+            <div class="cal" id="cal"></div>
+            <div class="divider"></div>
+            <div class="small">Dias em verde = concluídos.</div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- ===== CONFIG ===== -->
-    <section class="screen" id="screen-config">
+    <!-- VERSÍCULOS -->
+    <section class="view" id="view-versiculos">
       <div class="card">
-        <div class="sectionTitle">CONFIG</div>
-
-        <div class="field">
-          <label>Status</label>
-          <input id="statusInput" placeholder="Ex: Dia em dia / Pendência hoje / Offline..." />
+        <div class="hd">
+          <div>
+            <h2>Versículos</h2>
+            <small>30 versículos do devocional</small>
+          </div>
+          <button class="btn small" id="btnCopyAll">Copiar lista</button>
         </div>
-
-        <div class="row" style="margin-top:10px;">
-          <button class="btn primary" id="btnSaveStatus">Salvar</button>
-          <button class="btn" id="btnGoHome">Ir para Hoje</button>
+        <div class="bd">
+          <div class="list" id="versList"></div>
         </div>
+      </div>
+    </section>
 
-        <div class="subcard" style="margin-top:12px;">
-          <h3>Plano simples</h3>
-          <p>Você pode evoluir esse app depois (mais imagens, músicas locais, etc.).</p>
+    <!-- ORAÇÕES -->
+    <section class="view" id="view-oracoes">
+      <div class="card">
+        <div class="hd">
+          <div>
+            <h2>Orações</h2>
+            <small>Modelos curtos para orar</small>
+          </div>
         </div>
+        <div class="bd">
+          <div class="list" id="prayList"></div>
+        </div>
+      </div>
+    </section>
 
-        <div class="hint" style="margin-top:12px;">
-          Se você estiver usando <b>sw.js</b> (offline), às vezes precisa atualizar cache para ver mudanças.
+    <!-- TEMAS -->
+    <section class="view" id="view-temas">
+      <div class="card">
+        <div class="hd">
+          <div>
+            <h2>Temas bíblicos</h2>
+            <small>Ansiedade • Medo • Casamento • Fé • Perdão</small>
+          </div>
+        </div>
+        <div class="bd">
+          <div class="list" id="themesList"></div>
         </div>
       </div>
     </section>
   </div>
 
-  <!-- Bottom nav -->
-  <div class="bottomNav">
-    <div class="tabs">
-      <div class="tab active" data-go="hoje"><span>🏠</span>Hoje</div>
-      <div class="tab" data-go="oracao"><span>🙏</span>Oração</div>
-      <div class="tab" data-go="notas"><span>📝</span>Notas</div>
-      <div class="tab" data-go="config"><span>⚙️</span>Config</div>
+  <!-- TABS -->
+  <nav class="tabs" aria-label="Navegação">
+    <div class="bar">
+      <button class="tab active" data-go="devocional"><span class="ico">🗓️</span><span>30 Dias</span></button>
+      <button class="tab" data-go="versiculos"><span class="ico">📖</span><span>Versículos</span></button>
+      <button class="tab" data-go="oracoes"><span class="ico">🙏</span><span>Orações</span></button>
+      <button class="tab" data-go="temas"><span class="ico">💬</span><span>Temas</span></button>
     </div>
-  </div>
+  </nav>
 
-  <!-- Modal imagem -->
-  <div class="modal" id="imgModal">
-    <div class="modalBox">
-      <div class="modalTop">
-        <b id="modalTitle">Imagem</b>
-        <button id="modalClose">Fechar</button>
-      </div>
-      <img class="modalImg" id="modalImg" alt="Imagem" />
-    </div>
-  </div>
+  <div class="toast" id="toast">—</div>
 
   <script>
-    // ========= OFFLINE (se você já tem sw.js no repo) =========
+    // ===== PWA =====
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("./sw.js").catch(()=>{});
+      window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(()=>{}));
     }
 
-    // ========= UTIL =========
-    const $ = (q) => document.querySelector(q);
-    const $$ = (q) => [...document.querySelectorAll(q)];
-    const store = {
-      get(key, fallback){
-        try{ return JSON.parse(localStorage.getItem(key)) ?? fallback; }catch{ return fallback; }
+    // ===== UI helpers =====
+    const $ = (id)=> document.getElementById(id);
+    function toast(msg){
+      const t=$("toast");
+      t.textContent=msg;
+      t.classList.add("show");
+      clearTimeout(toast._tm);
+      toast._tm=setTimeout(()=>t.classList.remove("show"),2200);
+    }
+    function escapeHtml(s){
+      return String(s ?? '').replace(/[&<>"']/g, m => ({
+        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'
+      }[m]));
+    }
+
+    // Network
+    function netUpdate(){
+      const on=navigator.onLine;
+      $("netDot").classList.toggle("off", !on);
+      $("netTxt").textContent= on ? "online" : "offline";
+    }
+    window.addEventListener("online", netUpdate);
+    window.addEventListener("offline", netUpdate);
+    netUpdate();
+
+    // ===== Data =====
+    // Observação: textos bíblicos variam por tradução. Aqui eu coloco referência + mensagem curta.
+    const DAYS = [
+      {day:1,  ref:"Salmo 46:1",  verse:"Deus é o nosso refúgio e fortaleza, socorro bem presente na angústia.", pray:"Senhor, sê meu refúgio hoje. Fortalece meu coração e guia meus passos."},
+      {day:2,  ref:"Provérbios 3:5-6", verse:"Confie no Senhor de todo o coração... e Ele endireitará os seus caminhos.", pray:"Pai, eu escolho confiar em Ti. Direciona minhas decisões e meu caminho."},
+      {day:3,  ref:"Mateus 11:28", verse:"Vinde a mim... e eu vos aliviarei.", pray:"Jesus, eu entrego meu peso a Ti. Dá-me descanso e leveza na alma."},
+      {day:4,  ref:"Filipenses 4:6-7", verse:"Não andeis ansiosos... e a paz de Deus guardará o vosso coração.", pray:"Deus, eu entrego minhas preocupações. Guarda minha mente com a Tua paz."},
+      {day:5,  ref:"Isaías 41:10", verse:"Não temas, porque eu sou contigo... eu te ajudarei.", pray:"Senhor, tira meu medo. Eu recebo Tua ajuda e Tua força."},
+      {day:6,  ref:"Salmo 23:1", verse:"O Senhor é o meu pastor; nada me faltará.", pray:"Pastor amado, supre o que me falta e conduz-me em segurança."},
+      {day:7,  ref:"Romanos 8:28", verse:"Todas as coisas cooperam para o bem... dos que amam a Deus.", pray:"Pai, mesmo sem entender tudo, eu confio que Tu estás trabalhando para o bem."},
+      {day:8,  ref:"Josué 1:9", verse:"Sê forte e corajoso... o Senhor teu Deus é contigo.", pray:"Deus, dá-me coragem para avançar. Eu não estou sozinho(a)." },
+      {day:9,  ref:"Salmo 121:1-2", verse:"O meu socorro vem do Senhor, que fez o céu e a terra.", pray:"Senhor, eu levanto meus olhos a Ti. Socorre-me hoje."},
+      {day:10, ref:"João 14:27", verse:"Deixo-vos a paz... não se turbe o vosso coração.", pray:"Jesus, eu recebo Tua paz. Acalma meu coração e meus pensamentos."},
+      {day:11, ref:"Salmo 37:5", verse:"Entrega o teu caminho ao Senhor; confia nele, e o mais ele fará.", pray:"Pai, eu entrego meu caminho. Faz o que eu não consigo fazer."},
+      {day:12, ref:"2 Timóteo 1:7", verse:"Deus não nos deu espírito de medo, mas de poder, amor e equilíbrio.", pray:"Senhor, enche-me de equilíbrio e amor. Eu rejeito o medo."},
+      {day:13, ref:"Hebreus 13:5", verse:"Não te deixarei, nem te desampararei.", pray:"Deus, obrigado porque Tu não me abandona. Eu descanso na Tua presença."},
+      {day:14, ref:"Salmo 34:18", verse:"Perto está o Senhor dos que têm o coração quebrantado.", pray:"Senhor, chega perto de mim. Cura meu coração e renova minha esperança."},
+      {day:15, ref:"Lamentações 3:22-23", verse:"As misericórdias do Senhor... renovam-se a cada manhã.", pray:"Pai, obrigado pela Tua misericórdia. Renova-me hoje."},
+      {day:16, ref:"Tiago 1:5", verse:"Se alguém tem falta de sabedoria, peça a Deus.", pray:"Deus, dá-me sabedoria para agir certo e falar com amor."},
+      {day:17, ref:"1 Pedro 5:7", verse:"Lançando sobre ele toda a vossa ansiedade, porque ele tem cuidado de vós.", pray:"Senhor, eu lanço minha ansiedade sobre Ti. Obrigado porque cuidas de mim."},
+      {day:18, ref:"Salmo 91:1", verse:"Aquele que habita no esconderijo do Altíssimo... descansa à sombra do Onipotente.", pray:"Deus, eu habito em Ti. Guarda-me de todo mal."},
+      {day:19, ref:"Romanos 12:2", verse:"Transformai-vos pela renovação da vossa mente.", pray:"Senhor, renova minha mente. Que eu pense como Tu pensas."},
+      {day:20, ref:"Gálatas 5:22-23", verse:"O fruto do Espírito é amor... paz... domínio próprio.", pray:"Espírito Santo, produz Teu fruto em mim hoje."},
+      {day:21, ref:"Mateus 6:33", verse:"Buscai primeiro o Reino de Deus... e tudo vos será acrescentado.", pray:"Pai, eu coloco Teu Reino em primeiro lugar. Cuida do resto."},
+      {day:22, ref:"João 15:5", verse:"Sem mim nada podeis fazer.", pray:"Jesus, eu dependo de Ti. Ajuda-me em tudo o que eu fizer."},
+      {day:23, ref:"Salmo 19:14", verse:"Sejam agradáveis as palavras da minha boca... diante de Ti.", pray:"Senhor, guarda minha boca e meu coração. Que eu Te agrade."},
+      {day:24, ref:"Efésios 4:32", verse:"Sede bondosos... perdoando-vos uns aos outros.", pray:"Deus, dá-me um coração perdoador. Ensina-me a amar como Cristo."},
+      {day:25, ref:"1 Coríntios 13:4-5", verse:"O amor é paciente... não se irrita, não guarda rancor.", pray:"Senhor, forma em mim um amor maduro: paciente e sem rancor."},
+      {day:26, ref:"Salmo 139:14", verse:"Eu Te louvo porque fui formado(a) de modo especial e admirável.", pray:"Pai, obrigado pela vida que me deste. Ensina-me a me ver com Teus olhos."},
+      {day:27, ref:"Isaías 43:2", verse:"Quando passares pelas águas, eu serei contigo.", pray:"Deus, caminha comigo nas dificuldades. Eu confio na Tua presença."},
+      {day:28, ref:"Romanos 15:13", verse:"O Deus da esperança vos encha de toda alegria e paz.", pray:"Senhor, enche-me de esperança, alegria e paz no Espírito."},
+      {day:29, ref:"Salmo 27:1", verse:"O Senhor é a minha luz e a minha salvação; a quem temerei?", pray:"Deus, Tu és minha luz. Eu não temerei, pois Tu estás comigo."},
+      {day:30, ref:"Apocalipse 21:4", verse:"Deus enxugará dos seus olhos toda lágrima.", pray:"Pai, firma minha esperança no Teu futuro. Sustenta-me até o fim."},
+    ];
+
+    const PRAYERS = [
+      {title:"Ansiedade", text:"Senhor, eu coloco diante de Ti tudo o que me preocupa. Guarda minha mente e meu coração. Dá-me paz, disciplina e confiança. Em nome de Jesus, amém."},
+      {title:"Medo", text:"Pai, eu rejeito o medo e recebo Teu Espírito de poder, amor e equilíbrio. Fortalece-me e guia-me hoje. Em nome de Jesus, amém."},
+      {title:"Casamento", text:"Deus, abençoa meu casamento. Dá-nos amor, respeito, perdão e unidade. Que Cristo seja o centro do nosso lar. Em nome de Jesus, amém."},
+      {title:"Família", text:"Senhor, visita minha família. Protege, cura, restaura e traz salvação. Dá-nos paz dentro de casa. Em nome de Jesus, amém."},
+      {title:"Direção", text:"Pai, dá-me sabedoria e direção. Fecha portas que não vêm de Ti e abre as que são da Tua vontade. Em nome de Jesus, amém."},
+      {title:"Gratidão", text:"Senhor, obrigado por tudo o que Tu és e fazes. Eu escolho Te adorar mesmo antes de ver a resposta. Em nome de Jesus, amém."},
+    ];
+
+    const THEMES = [
+      {
+        title:"Ansiedade",
+        msg:"Deus não manda você negar a realidade, mas entregar o peso. Oração + confiança gera paz.",
+        refs:["Filipenses 4:6-7","1 Pedro 5:7","Mateus 6:33-34","Salmo 94:19","João 14:27"]
       },
-      set(key, value){
-        localStorage.setItem(key, JSON.stringify(value));
+      {
+        title:"Medo",
+        msg:"O medo grita, mas a presença de Deus fala mais alto. Coragem é obedecer com Deus ao lado.",
+        refs:["Isaías 41:10","Josué 1:9","2 Timóteo 1:7","Salmo 27:1","Salmo 56:3-4"]
+      },
+      {
+        title:"Casamento",
+        msg:"Casamento é aliança: amor prático, perdão diário e Cristo no centro.",
+        refs:["Efésios 5:25","1 Coríntios 13:4-7","Eclesiastes 4:9-12","Colossenses 3:13-14","1 Pedro 3:7"]
+      },
+      {
+        title:"Fé",
+        msg:"Fé não é sentir tudo perfeito; é confiar em Deus mesmo quando ainda não vê.",
+        refs:["Hebreus 11:1","Provérbios 3:5-6","Romanos 8:28","Marcos 9:24","Salmo 37:5"]
+      },
+      {
+        title:"Perdão",
+        msg:"Perdão não é aprovar o erro, é liberar seu coração para viver em paz.",
+        refs:["Efésios 4:32","Mateus 6:14-15","Colossenses 3:13","Lucas 23:34","Romanos 12:19"]
+      },
+      {
+        title:"Paz",
+        msg:"A paz de Deus não depende do barulho de fora, mas da presença dEle dentro.",
+        refs:["João 14:27","Isaías 26:3","Salmo 23:1-4","Filipenses 4:7","Salmo 46:1"]
       }
+    ];
+
+    // ===== Storage =====
+    const KEY_DONE="dev30_done_v1";
+    const KEY_SEL="dev30_sel_v1";
+
+    function loadDone(){
+      try{
+        const raw=localStorage.getItem(KEY_DONE);
+        const v=raw?JSON.parse(raw):[];
+        return Array.isArray(v)?v:[];
+      }catch(e){ return []; }
+    }
+    function saveDone(arr){ localStorage.setItem(KEY_DONE, JSON.stringify(arr)); }
+
+    let done = loadDone(); // array of day numbers (1..30)
+    let selectedDay = Number(localStorage.getItem(KEY_SEL) || "1");
+    if(!selectedDay || selectedDay<1 || selectedDay>30) selectedDay=1;
+
+    // ===== Views/Tabs =====
+    const views={
+      devocional:$("view-devocional"),
+      versiculos:$("view-versiculos"),
+      oracoes:$("view-oracoes"),
+      temas:$("view-temas")
     };
-
-    // ========= STATUS =========
-    function setOnlineUI(){
-      const online = navigator.onLine;
-      $("#statusDot").style.background = online ? "var(--good)" : "var(--warn)";
-      $("#statusDot").style.boxShadow = online ? "0 0 0 4px rgba(69,226,168,.15)" : "0 0 0 4px rgba(255,209,102,.15)";
-      const saved = store.get("statusText", "Dia em dia");
-      $("#statusText").textContent = online ? saved : "Offline";
+    function setView(name){
+      Object.values(views).forEach(v=>v.classList.remove("active"));
+      views[name].classList.add("active");
+      document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active", t.dataset.go===name));
+      if(name==="versiculos") renderVerses();
+      if(name==="oracoes") renderPrayers();
+      if(name==="temas") renderThemes();
+      window.scrollTo({top:0,behavior:"smooth"});
     }
-    window.addEventListener("online", setOnlineUI);
-    window.addEventListener("offline", setOnlineUI);
+    document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>setView(t.dataset.go)));
 
-    // ========= DEVOCIONAL / VERSOS =========
-    const verses = [
-      { text: "“Deixo-vos a paz, a minha paz vos dou; não vo-la dou como o mundo a dá.”", ref: "João 14:27", devoTitle:"Devocional: Coragem", devoText:"Coragem não é ausência de medo; é fidelidade apesar do medo. Dê o próximo passo com Deus." },
-      { text: "“O Senhor é o meu pastor; nada me faltará.”", ref: "Salmos 23:1", devoTitle:"Devocional: Confiança", devoText:"Quando Deus guia, a alma descansa. Confie na direção dEle hoje." },
-      { text: "“Tudo posso naquele que me fortalece.”", ref: "Filipenses 4:13", devoTitle:"Devocional: Força", devoText:"Não é sobre a sua capacidade, é sobre a força que vem do Alto." },
-      { text: "“Lâmpada para os meus pés é a tua palavra.”", ref: "Salmos 119:105", devoTitle:"Devocional: Direção", devoText:"Um passo de cada vez, iluminado pela Palavra." },
-    ];
+    // ===== Render calendar & hero =====
+    function progressText(){ return `${done.length}/30 concluídos`; }
 
-    function renderVerse(i){
-      const v = verses[i];
-      $("#verseText").textContent = v.text;
-      $("#verseRef").textContent = v.ref;
-      $("#devoTitle").textContent = v.devoTitle;
-      $("#devoText").textContent = v.devoText;
-      store.set("verseIndex", i);
-    }
-
-    // ========= GALERIA (ADICIONE SUAS IMAGENS AQUI) =========
-    // Coloque TODAS as suas imagens dentro da pasta /imagens e liste aqui:
-    const galleryImages = [
-      { src: "./imagens/C5782EF9-9488-4CB9-8285-C27D142A8118.png", title: "Imagem 1" },
-
-      // 👉 ADICIONE AS OUTRAS ASSIM (exemplo):
-      // { src: "./imagens/OUTRO_ARQUIVO.png", title: "Imagem 2" },
-      // { src: "./imagens/OUTRO_ARQUIVO2.png", title: "Imagem 3" },
-    ];
-
-    function renderGallery(){
-      const grid = $("#galleryGrid");
-      grid.innerHTML = "";
-      galleryImages.forEach((img, idx) => {
-        const tile = document.createElement("div");
-        tile.className = "imgTile";
-        tile.innerHTML = `
-          <img src="${img.src}" alt="${img.title}">
-          <small>${img.title}</small>
-        `;
-        tile.addEventListener("click", ()=> openModal(img.title, img.src));
-        grid.appendChild(tile);
-      });
+    function renderCalendar(){
+      const cal=$("cal");
+      cal.innerHTML="";
+      for(let d=1; d<=30; d++){
+        const div=document.createElement("div");
+        div.className="day";
+        if(d===selectedDay) div.classList.add("active");
+        if(done.includes(d)) div.classList.add("done");
+        div.textContent=d;
+        div.onclick=()=>{
+          selectedDay=d;
+          localStorage.setItem(KEY_SEL, String(selectedDay));
+          renderCalendar();
+          renderHero();
+        };
+        cal.appendChild(div);
+      }
+      $("progressBadge").textContent = progressText();
     }
 
-    // ========= MODAL =========
-    function openModal(title, src){
-      $("#modalTitle").textContent = title;
-      $("#modalImg").src = src;
-      $("#imgModal").classList.add("open");
-    }
-    function closeModal(){
-      $("#imgModal").classList.remove("open");
-      $("#modalImg").src = "";
-    }
-    $("#modalClose").addEventListener("click", closeModal);
-    $("#imgModal").addEventListener("click", (e)=>{ if(e.target.id==="imgModal") closeModal(); });
+    function renderHero(){
+      const data = DAYS.find(x=>x.day===selectedDay) || DAYS[0];
+      const isDone = done.includes(selectedDay);
 
-    // ========= AÇÕES HOJE =========
-    $("#btnTrocar").addEventListener("click", ()=>{
-      const i = (store.get("verseIndex", 0) + 1) % verses.length;
-      renderVerse(i);
-    });
+      $("heroVerse").innerHTML = `
+        <div class="ref">Dia ${data.day} • ${escapeHtml(data.ref)}</div>
+        <div class="txt">“${escapeHtml(data.verse)}”</div>
+        <div class="pray"><b>Oração:</b> ${escapeHtml(data.pray)}</div>
+        <div class="divider"></div>
+        <div class="small">
+          <b>Aplicação:</b> O que Deus quer trabalhar em você hoje? Escreva 1 ação prática.
+          <br/>Status: ${isDone ? "<span style='color:var(--ok);font-weight:1000'>Concluído ✅</span>" : "<span style='color:var(--muted)'>Pendente</span>"}
+        </div>
+      `;
+    }
 
-    $("#btnCopiar").addEventListener("click", async ()=>{
-      const text = `${$("#verseText").textContent}\n${$("#verseRef").textContent}\n\n${$("#devoTitle").textContent}\n${$("#devoText").textContent}`;
+    async function copyText(text){
       try{
         await navigator.clipboard.writeText(text);
-        alert("Copiado!");
-      }catch{
-        alert("Não consegui copiar. Tente selecionar e copiar manualmente.");
+        toast("Copiado ✅");
+      }catch(e){
+        alert(text);
       }
-    });
-
-    $("#btnCompartilhar").addEventListener("click", async ()=>{
-      const text = `${$("#verseText").textContent}\n${$("#verseRef").textContent}\n\n${$("#devoTitle").textContent}\n${$("#devoText").textContent}`;
-      if(navigator.share){
-        try{ await navigator.share({ title:"App Cristão", text }); }
-        catch{}
-      } else {
-        alert("Compartilhar não disponível aqui. Use Copiar.");
-      }
-    });
-
-    // ========= MÚSICA =========
-    function loadAudio(){
-      const url = store.get("audioUrl", "");
-      $("#audioUrl").value = url;
-      $("#audioPlayer").src = url || "";
     }
-    $("#btnSalvarAudio").addEventListener("click", ()=>{
-      const url = $("#audioUrl").value.trim();
-      store.set("audioUrl", url);
-      loadAudio();
-      alert("Salvo!");
-    });
-    $("#btnLimparAudio").addEventListener("click", ()=>{
-      store.set("audioUrl", "");
-      loadAudio();
-      alert("Limpo!");
-    });
 
-    // ========= PEDIDOS DE ORAÇÃO =========
-    function renderPrayers(){
-      const list = $("#prayerList");
-      const prayers = store.get("prayers", []);
-      list.innerHTML = "";
-      if(prayers.length === 0){
-        const empty = document.createElement("div");
-        empty.className = "hint";
-        empty.textContent = "Nenhum pedido ainda. Adicione acima.";
-        list.appendChild(empty);
-        return;
+    $("btnDone").addEventListener("click", ()=>{
+      if(done.includes(selectedDay)){
+        done = done.filter(x=>x!==selectedDay);
+        saveDone(done);
+        toast("Desmarcado");
+      }else{
+        done.push(selectedDay);
+        done.sort((a,b)=>a-b);
+        saveDone(done);
+        toast("Marcado ✅");
       }
+      renderCalendar();
+      renderHero();
+    });
 
-      prayers.forEach((p, idx)=>{
-        const el = document.createElement("div");
-        el.className = "item";
-        el.innerHTML = `
-          <div class="itemTop">
-            <div>
-              <b>${escapeHtml(p.title || "Pedido")}</b>
-              <small>${new Date(p.ts).toLocaleString()}</small>
+    $("btnCopy").addEventListener("click", ()=>{
+      const d = DAYS.find(x=>x.day===selectedDay) || DAYS[0];
+      const text = `Dia ${d.day} — ${d.ref}\n${d.verse}\n\nOração: ${d.pray}`;
+      copyText(text);
+    });
+
+    $("btnReset").addEventListener("click", ()=>{
+      if(!confirm("Reiniciar e limpar os 30 dias?")) return;
+      done=[];
+      saveDone(done);
+      selectedDay=1;
+      localStorage.setItem(KEY_SEL,"1");
+      toast("Reiniciado");
+      renderCalendar();
+      renderHero();
+    });
+
+    // ===== Verses list =====
+    function renderVerses(){
+      const box=$("versList");
+      box.innerHTML="";
+      DAYS.forEach(d=>{
+        const div=document.createElement("div");
+        div.className="item";
+        div.innerHTML=`
+          <div class="left">
+            <div class="title">Dia ${d.day} • ${escapeHtml(d.ref)}</div>
+            <div class="meta">
+              <span class="tag">${done.includes(d.day) ? "✅ feito" : "⏳ pendente"}</span>
+              <span class="tag">Copiar</span>
             </div>
-            <button class="x" title="Remover">✕</button>
+            <div class="small" style="margin-top:8px;line-height:1.55">“${escapeHtml(d.verse)}”</div>
           </div>
-          <div style="margin-top:8px; color: var(--muted); line-height:1.35;">
-            ${escapeHtml(p.text || "").replace(/\n/g,"<br>")}
-          </div>
+          <button class="btn small" data-copy="${d.day}">Copiar</button>
         `;
-        el.querySelector(".x").addEventListener("click", ()=>{
-          const arr = store.get("prayers", []);
-          arr.splice(idx, 1);
-          store.set("prayers", arr);
-          renderPrayers();
-        });
-        list.appendChild(el);
+        box.appendChild(div);
+      });
+      box.querySelectorAll("[data-copy]").forEach(btn=>{
+        btn.onclick=()=>{
+          const day=Number(btn.getAttribute("data-copy"));
+          const d=DAYS.find(x=>x.day===day);
+          copyText(`${d.ref}\n${d.verse}`);
+        };
       });
     }
 
-    $("#btnAddPrayer").addEventListener("click", ()=>{
-      const title = $("#prayTitle").value.trim();
-      const text = $("#prayText").value.trim();
-      if(!title && !text){
-        alert("Escreva um pedido.");
-        return;
-      }
-      const prayers = store.get("prayers", []);
-      prayers.unshift({ title, text, ts: Date.now() });
-      store.set("prayers", prayers);
-      $("#prayTitle").value = "";
-      $("#prayText").value = "";
-      renderPrayers();
+    $("btnCopyAll").addEventListener("click", ()=>{
+      const text = DAYS.map(d=>`Dia ${d.day} — ${d.ref}\n${d.verse}`).join("\n\n");
+      copyText(text);
     });
 
-    $("#btnClearPrayers").addEventListener("click", ()=>{
-      if(confirm("Apagar todos os pedidos?")){
-        store.set("prayers", []);
-        renderPrayers();
-      }
-    });
-
-    // ========= NOTAS =========
-    function loadNotes(){
-      $("#notesBox").value = store.get("notes", "");
-    }
-    $("#btnSaveNotes").addEventListener("click", ()=>{
-      store.set("notes", $("#notesBox").value);
-      alert("Notas salvas!");
-    });
-    $("#btnClearNotes").addEventListener("click", ()=>{
-      if(confirm("Limpar notas?")){
-        store.set("notes", "");
-        loadNotes();
-      }
-    });
-
-    // ========= CONFIG =========
-    function loadStatus(){
-      $("#statusInput").value = store.get("statusText", "Dia em dia");
-      setOnlineUI();
-    }
-    $("#btnSaveStatus").addEventListener("click", ()=>{
-      store.set("statusText", $("#statusInput").value.trim() || "Dia em dia");
-      setOnlineUI();
-      alert("Salvo!");
-    });
-    $("#btnGoHome").addEventListener("click", ()=> go("hoje"));
-
-    // ========= NAV =========
-    function go(name){
-      $$(".screen").forEach(s => s.classList.remove("active"));
-      $(`#screen-${name}`).classList.add("active");
-
-      $$(".tab").forEach(t => t.classList.remove("active"));
-      $(`.tab[data-go="${name}"]`).classList.add("active");
-
-      store.set("screen", name);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-    $$(".tab").forEach(t => t.addEventListener("click", ()=> go(t.dataset.go)));
-
-    // ========= segurança p/ HTML =========
-    function escapeHtml(str){
-      return String(str)
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
+    // ===== Prayers list =====
+    function renderPrayers(){
+      const box=$("prayList");
+      box.innerHTML="";
+      PRAYERS.forEach(p=>{
+        const div=document.createElement("div");
+        div.className="item";
+        div.innerHTML=`
+          <div class="left">
+            <div class="title">🙏 ${escapeHtml(p.title)}</div>
+            <div class="small" style="margin-top:8px;line-height:1.55">${escapeHtml(p.text)}</div>
+          </div>
+          <button class="btn small" data-pray="${escapeHtml(p.title)}">Copiar</button>
+        `;
+        box.appendChild(div);
+      });
+      box.querySelectorAll("[data-pray]").forEach(btn=>{
+        btn.onclick=()=>{
+          const title=btn.getAttribute("data-pray");
+          const p=PRAYERS.find(x=>x.title===title);
+          copyText(`Oração — ${p.title}\n${p.text}`);
+        };
+      });
     }
 
-    // ========= INIT =========
-    (function init(){
-      const savedIndex = store.get("verseIndex", 0);
-      renderVerse(savedIndex);
+    // ===== Themes list =====
+    function renderThemes(){
+      const box=$("themesList");
+      box.innerHTML="";
+      THEMES.forEach(t=>{
+        const refs = t.refs.map(r=>`• ${r}`).join("<br/>");
+        const div=document.createElement("div");
+        div.className="item";
+        div.innerHTML=`
+          <div class="left">
+            <div class="title">💬 ${escapeHtml(t.title)}</div>
+            <div class="small" style="margin-top:8px;line-height:1.55">${escapeHtml(t.msg)}</div>
+            <div class="divider"></div>
+            <div class="small"><b>Referências:</b><br/>${refs}</div>
+          </div>
+          <button class="btn small" data-theme="${escapeHtml(t.title)}">Copiar</button>
+        `;
+        box.appendChild(div);
+      });
+      box.querySelectorAll("[data-theme]").forEach(btn=>{
+        btn.onclick=()=>{
+          const title=btn.getAttribute("data-theme");
+          const t=THEMES.find(x=>x.title===title);
+          copyText(`Tema — ${t.title}\n${t.msg}\n\nReferências:\n- ${t.refs.join("\n- ")}`);
+        };
+      });
+    }
 
-      renderGallery();
-      loadAudio();
-      renderPrayers();
-      loadNotes();
-      loadStatus();
-
-      const last = store.get("screen", "hoje");
-      go(last);
-    })();
+    // ===== Init =====
+    renderCalendar();
+    renderHero();
   </script>
 </body>
 </html>
