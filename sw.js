@@ -1,34 +1,40 @@
-const CACHE = "devocional-30dias-v1";
-const CORE = [
+const CACHE_NAME = "app-cristao-v4";
+
+const ASSETS = [
   "./",
   "./index.html",
+  "./app.js",
   "./manifest.webmanifest",
+  "./apple-touch-icon.png",
   "./icon-192.png",
-  "./icon-512.png"
+  "./icon-512.png",
+
+  "./imagens/hero-hoje.jpg",
+  "./imagens/hero-biblia.jpg",
+  "./imagens/hero-oracao.jpg",
+  "./imagens/hero-temas.jpg",
+  "./imagens/hero-calendario.jpg",
+  "./imagens/hero-devocional.jpg"
 ];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE).then((cache) => cache.addAll(CORE)).then(() => self.skipWaiting())
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
   );
+  self.skipWaiting();
 });
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then(keys => Promise.all(
-      keys.map(k => (k !== CACHE ? caches.delete(k) : Promise.resolve()))
-    )).then(() => self.clients.claim())
+    caches.keys().then((keys) =>
+      Promise.all(keys.map((k) => (k !== CACHE_NAME ? caches.delete(k) : null)))
+    )
   );
+  self.clients.claim();
 });
 
 self.addEventListener("fetch", (event) => {
   event.respondWith(
-    caches.match(event.request).then((cached) => {
-      return cached || fetch(event.request).then((resp) => {
-        const copy = resp.clone();
-        caches.open(CACHE).then((cache) => cache.put(event.request, copy)).catch(()=>{});
-        return resp;
-      }).catch(()=>cached);
-    })
+    caches.match(event.request).then((cached) => cached || fetch(event.request))
   );
 });
